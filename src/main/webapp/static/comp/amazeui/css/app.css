@@ -1,0 +1,156 @@
+/* Write your styles */
+.get {
+    background: #1E5B94;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.get-title {
+    font-size: 200%;
+    border: 2px solid #fff;
+    padding: 20px;
+    display: inline-block;
+}
+
+.get-btn {
+    background: #fff;
+}
+
+.detail {
+    background: #fff;
+}
+
+.detail-h2 {
+    text-align: center;
+    font-size: 150%;
+    margin: 40px 0;
+}
+
+.detail-h3 {
+    color: #1f8dd6;
+}
+
+.detail-p {
+    color: #7f8c8d;
+}
+
+.detail-mb {
+    margin-bottom: 30px;
+}
+
+.hope {
+    background: #0bb59b;
+    padding: 50px 0;
+}
+
+.hope-img {
+    text-align: center;
+}
+
+.hope-hr {
+    border-color: #149C88;
+}
+
+.hope-title {
+    font-size: 140%;
+}
+
+.about {
+    background: #fff;
+    padding: 40px 0;
+    color: #7f8c8d;
+}
+
+.about-color {
+    color: #34495e;
+}
+
+.about-title {
+    font-size: 120%;
+    padding: 30px 0 50px 0;
+    text-align: center;
+}
+.footer{
+    font-size: 60%;
+}
+.am-topbar a {
+    color: #ffffff;
+}
+.footer p {
+    color: gray;
+    margin: 0;
+    padding: 15px 0;
+    text-align: center;
+    background: white;
+    text-indet:2em;
+    height: 49px;
+}
+.doc-example{
+    border: 1px solid #eee;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    padding: 0 15px 15px;
+}
+
+.demo-icon-home {
+    position: absolute;
+    color: #eee;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+    padding: 0 10px;
+    border-radius: 2px;
+    left: 10px;
+}
+.box {
+    font-size: 100%;
+    height: 300px;
+    line-height: 300px;
+    text-align: center;
+    transition: all .2s ease;
+    margin: 0.25rem 0.25rem 0.25rem 0.25rem;
+
+}
+
+
+[class*='am-icon-'] {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.customContainer{
+    color: white;
+    text-align: center;
+    width:50% ;
+    height : 100%;
+}
+.customContainer a{
+    color: white;
+}
+.customContainer a:hover{
+    color: #4d4d4d;
+}
+.nationGuard{
+    background:  #aaaed7;
+}
+.salary{
+    background:  #e95352 ;
+}
+.money{
+    background:  #799fde ;
+    cursor: not-allowed;
+}
+.workstation table{
+    border-spacing: 10px 5px;
+    border-collapse: separate;
+}
+.workstation td{
+    width:50%;
+}
+
+li.more {
+    margin-top: 20px;
+    color: grey;
+}

@@ -1,0 +1,62 @@
+/**弹框提示插件**/
+.dialog-overlay{ position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: #000; filter: alpha(opacity=30); z-index: 200; _position: absolute; _height: expression(eval(document.body.scrollHeight));  display:none;}
+.dialog-main{left:0;padding:0;margin:0 ;top:0;position:absolute;z-index:9999;overflow:visible;}
+.dialog-main .dialog-top{height:5px;position:relative;width:100%;}
+.dialog-main .dialog-top div{height:5px;position:absolute;top:0;}
+.dialog-main .dialog-middle{position:relative;width:100%;height:auto;left:0;top:0;}
+.dialog-main .dialog-border-left{width:5px;left:0;position:absolute;top:0;bottom:0;}
+.dialog-main .dialog-border-right{width:5px;right:0;position:absolute;top:0;bottom:0;}
+.dialog-main .dialog-middle-content{}
+.dialog-main .dialog-middle-content .errortip{ font-size:15px;color: #4e8eca; min-height:40px; line-height:26px; padding-left:20px; padding-right:10px; margin-top:10px; margin-bottom:20px;}
+.dialog-main .dialog-middle-content .infotip{ font-size:14px; font-weight: bold; min-height:40px; line-height:40px; padding-left:32px; margin-top:20px; margin-bottom:20px;}
+.dialog-main .dialog-middle-content .infotip a{ color:#333;}
+.dialog-main .dialog-middle-content .Carttip{ font-size:14px; font-weight: bold; color: #666;line-height: 40px;}
+.dialog-main .dialog-middle-content .Carttip b{ color:#F00;}
+.dialog-main  .dialog-title{height: 38px; line-height: 38px; padding: 0 0px 0 20px; color: #FFF; font-size: 14px; font-weight: bold; position: relative; display: inline; _float: left;}
+.dialog-main .dialog-content{padding: 10px 10px 10px 10px; background: #fff; line-height: 28px; font-size:14px;min-height: 60px;clear: both; border-top: solid 1px #e2e2e2; _padding: 10px 30px; zoom: 1;border-radius:10px 10px 0 0;}
+.dialog-main .dialog-content b.errok{ background: url(../images/list.png) no-repeat -295px -167px; width:40px; height:40px; display:inline-block; vertical-align: middle; margin-right:20px;}
+.dialog-main .dialog-opts{ display:none;}
+.dialog-main .dialog-opts input{ display:inline-block;width:75px;height:30px;line-height:30px;text-align:center;margin-right:5px; cursor:pointer; color:#fff;background:#4e8eca; border:none;border-radius:5px;}
+#DialogCancel{ background:#f66272;}
+.dialog-png-fiexed{filter:alpha(opacity=50);}
+.dialog-main .dialog-bottom{height:10px;position:relative;width:100%;}
+.dialog-main .dialog-bottom div{position:absolute;top:0;height:10px;}
+.dialog-main .dialog-opts{padding: 20px 0px 10px 0px; background: #fff; zoom: 1; clear: both;text-align: center;border-radius:0 0 10px 10px;}
+.dialog-main button.dialog-close { position: absolute;right: 20px;top: 10px;width: 18px;height: 18px;background: url(../images/closeico.png) no-repeat center;cursor: pointer;border: 0 none;_z-index: 9999;}
+.dialog-main .dialog-middle-content .buyoktips{ width:36px; height:36px; display:inline-block; background: #F00; vertical-align: middle; margin-right:10px;}
+.dialog-main .dialog-middle-content .select_btn{ margin-top:10px; padding:15px 0; text-align:right; border-top:1px solid #CCC;}
+.dialog-main .dialog-middle-content .select_btn a{display:inline-block;width:105px;height:33px;line-height:33px;border:1px solid #dfdfdf;text-align:center;margin-right:5px; cursor:pointer; background:#f0f0f0;}
+.dialog-main .dialog-middle-content .select_btn a.goon{background:#f0f0f0;}
+.dialog-main .dialog-middle-content .select_btn a.black{color:#fff;background:#ff8600;}
+
+/* 体检日历 */
+.datetimepicker {margin:15px auto;font-family: "微软雅黑" "Times New Roman", Times, serif;}
+.datetimepicker .data-title {position: relative; padding:0 7px; margin:0 -7px;}
+.datetimepicker .data-title h3 {margin:0 34px; height: 52px; line-height: 52px; color: #222; text-align: center; font-size:16px; font-weight:bold;}
+.datetimepicker .data-title a {position: absolute; top:6px; width: 20px; height: 32px;}
+.datetimepicker .data-title .left-btn {left:12px; background: url(../images/listico34.png) no-repeat center center;background-size:100%;}
+.datetimepicker .data-title .right-btn {right:12px;background: url(../images/listico35.png) no-repeat center center;background-size:100%;}
+
+.datetimepicker .week_tit{height:30px;line-height:30px;}
+.datetimepicker .week_tit b{font-weight:normal;display:inline-block;width: 14.2%;text-align:center;font-size:14px; font-weight:bold;}
+
+.datetimepicker .data-list {position: relative; height:  auto; font-family: 'Mittelschrift';}
+
+.datetimepicker .data-list a { position: static; opacity: 1;
+filter: alpha(opacity=100); display: inline-block;vertical-align: top;width: 14.2%;height: 40px; line-height: 40px; text-align: center; color: #4e8eca;font-size:16px; cursor: pointer; font-weight:bold;}
+.datetimepicker .data-list a {*display: inline; cursor: default;}
+.datetimepicker .data-list a.none {border-top: 0;}
+.datetimepicker .data-list a.license {cursor: pointer;}
+.datetimepicker .data-list a.active { color: #999; }
+.datetimepicker .data-list a.has:hover { color: #fff;background: url(../images/date-active.png) no-repeat center center; }
+.datetimepicker .data-list a.teday {/*color: #09F; border:1px solid #2fadc1;*/}
+.datetimepicker .data-list a.has:after {position: absolute;left:50%; margin-left: -3px; bottom:-5px; width:5px; height: 5px; content: ''; background: url(../images/date-has.png);}
+.datetimepicker .data-list a.license,.datetimepicker .data-list a.ban,.datetimepicker .data-list a.full,.datetimepicker .data-list a.booking{position:relative;}
+.datetimepicker .data-list a.ban span{display:inline-block;width:27px;height:27px;position:absolute;left:16px;top:7px;background:url(../images/disable.png) no-repeat;background-size:100%;}
+.datetimepicker .data-list a.license span{display:inline-block;width:43px;height:28px;position:absolute;left:8px;top:10px;background:url(../images/license.png) no-repeat;background-size:100%;}
+.datetimepicker .data-list a.full span{display:inline-block;width:20px;height:10px;position:absolute;left:20px;bottom:0px;background:url(../images/full.png) no-repeat;background-size:100%;}
+.datetimepicker .data-list a.booking span{display:inline-block;width:43px;height:28px;position:absolute;left:8px;top:10px;background:url(../images/booking.png) no-repeat;background-size:100%;}
+
+
+
+

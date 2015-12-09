@@ -1,0 +1,3 @@
+
+<link rel="stylesheet" href="${ctx}/static/webApp/css/css.css">
+<link rel="stylesheet" href="${ctx}/static/webApp/css/style.css">

@@ -1,0 +1,249 @@
+ input.checkbox{ width: 13px!important;}
+input{outline: none; color: #ccc;}
+.blue{color:#59a0cd !important; padding-left: 10px; }
+
+.header span{margin-top: 53px; float: left; padding-left: 30px; font-size: 25px; color: #7E7E7E; font-weight: 300;}
+#login_content .left{border:0; float: left; margin:0 0 0 155px; width: 490px; height: 390px; background-color: #f80; background: url(../images/login_bg_pic.png) 0 0 no-repeat;}
+#register-content{ /* width: 980px; */ height: 300px;margin:0 95px;}
+
+#login_content .registerform{ margin-top: 85px; width: 500px; margin-right: 60px;}
+.login_btn{font-family: "微软雅黑"; border:0;font-size: 18px; font-weight: 600;padding:6px 50px; color: #fff; cursor: pointer; background-color: #93cd54;}
+.login_btn:hover{ background-color: #80c732;}
+.chose_way1,.chose_way{width: 980px;  height: 30px; font-size: 18px;margin:0 auto; font-family: "微软雅黑";color: #c8c8c8; border-bottom: 2px solid #e6e6e6;}
+
+.chose_way1 span,.chose_way span{ padding:0 50px; text-align: center; line-height: 22px; display: inline-block; height: 28px;}
+
+.chose_way .phone_register{ margin-left: 170px;}
+.chose_way  span:hover{cursor: pointer;}
+.chose_way .current_color{ font-weight: 600; color: #95cc54; border-bottom: 2px solid #95cc54; cursor: pointer;}
+input.sum_register{font-family: "微软雅黑"; line-height: 23px; background-color: #93cd54;  color: #fff; border:0; font-size: 18px; font-weight: 600;}
+input{ width: 160px; padding: 0 10px;font-family: "微软雅黑"; }
+input.sum_register:hover{cursor: pointer; background-color: #80c732;}
+.registerform .inputxt{ padding:5px 10px; color:#c6c6c6; font-size: 14px;	height: 27px;}
+.noempty,.code_error,#emailmsg,.error_massage,#write_please{ color: red; font-size: 12px; height: 30px; float: left; line-height: 33px;}
+.code_box{  padding:10px 0 18px 0;}
+.code_box span,.code_box input,.code_box a{ float: left; margin-right: 5px;}
+.code_box a{ line-height: 36px;}
+#write_please{ margin-left: 20px;}
+#checkCode{ margin:6px 5px 0 0;}
+.email{ float: left; margin-right: 20px; display: inline; width: 195px; color:#c6c6c6;}
+span.Time{ float: left; width: 93px;font-size: 12px; height: 33px; line-height: 33px; margin-left: 10px; text-align: center; color: #c4c4c4;background-color: #f9f9f9;}
+/* ..........................以下是表单样式................................. */
+.fz12{font-size:12px;}
+input{font-size:14px;color:#717171;padding: 8px 2px; vertical-align:middle;}
+
+.lireset2{padding-left:10px;}
+.registerform{float: right; width: 795px; margin-top:60px; margin-bottom:40px;}
+.registerform .need{
+	width:10px;
+	color:#b20202;
+}
+.registerform td{
+	
+	padding:5px 0;
+	height: 25px;
+	line-height: 22px;
+	/* vertical-align:top; */
+	text-align:left;
+	color: #717171;
+}
+.registerform tr{ height: 30px; width: 700px; }
+.registerform .inputxt,.registerform textarea{
+	border:1px solid #a5aeb6;
+	width:196px;
+	padding:4px 2px;
+}
+.inputxt{ float: left;}
+.registerform textarea{
+	height:75px;
+}
+.registerform label{
+	margin:0 15px 0 4px;
+}
+.registerform .tip{
+	line-height:20px;
+	color:#5f6a72;
+}
+.registerform select{
+	width:202px;
+}
+.registerformalter select{
+	width:124px;
+}
+.swfupload{
+	vertical-align:top;
+}
+.passwordStrength{ float: left; margin-left: 5px; display: inline-block;
+
+}
+.passwordStrength b{
+	font-weight:normal;
+}
+.passwordStrength b,.passwordStrength span{
+	display:inline-block; 
+	vertical-align:middle;
+	line-height:16px;
+	line-height:18px\9;
+	height:16px;
+}
+.passwordStrength span{
+
+	padding:8px 14px ;
+	 margin-right: 1px;
+	text-align:center; 
+	background-color:#f1d0b9; 
+	border-right:1px solid #fff;
+	color: #fff;
+	font-size: 12px;
+}
+.passwordStrength .last{
+	border-right:none;
+}
+.passwordStrength .bgStrength{
+	color:#fff;
+	background-color:#71b83d;
+}
+#demo1 .passwordStrength{
+	margin-left:8px;
+}
+.tipmsg{
+	padding:0 10px;
+}
+textarea{
+	overflow:auto;
+	resize:none;
+}
+
+
+
+.document{
+	min-height:800px;
+}
+.document .sidenav{
+	width:170px;
+	background-color:#eee;
+	padding:10px 10px 20px;
+}
+.document .sidenav h3{
+	font-size:14px;
+	padding:5px 10px;
+	background-color:#e1e1e1;
+}
+.document .sidenav a{
+	color:#1870a9;
+}
+.document .content{
+	width:750px;
+}
+.document .content dt{
+	background-color:#eee;
+    line-height:2;
+	padding:0 10px;
+}
+.document .content dt a{
+	color:#79a605;
+	padding:5px 0;
+	font-size:20px;
+	font-weight:bold;
+	display:block;
+}
+.document .content dt a:hover,
+.document .content h3 a:hover{text-decoration:none; cursor:default;}
+.document .content dd{
+	padding:15px 0;
+}
+.document .content h3{
+	color:#333;
+	font-size:16px;
+}
+.document .content p{
+	padding:0 0 16px 10px;
+	margin-bottom:0;
+}
+.document .content .intro{
+	margin-bottom:16px;
+}
+.document .content .intro p{
+	padding-bottom:0;
+}
+.document .content .intro pre{padding-left:10px;}
+.document .content .wp_syntax{
+	margin-left:10px;
+	margin-right:10px;
+}
+.document .sidenav .lireset2{padding-left:0;}
+.document .sidenav li ul{display:none;}
+
+/*==========以下部分是Validform必须的===========*/
+.Validform_checktip{
+	margin-left:8px;
+	line-height:20px;
+	height:20px;
+	overflow:hidden;
+	color:#999;
+	font-size:12px;
+}
+.Validform_right{
+	color:#71b83d;
+	padding-left:20px;
+	background:url(../images/right.png) no-repeat left center;
+}
+.Validform_wrong{
+	color:red;
+	padding-left:20px;
+	white-space:nowrap;
+	background:url(../images/error.png) no-repeat left center;
+}
+.Validform_loading{
+	padding-left:20px;
+	background:url(../images/onLoad.gif) no-repeat left center;
+}
+.Validform_error{
+	background-color:#ffe7e7;
+}
+#Validform_msg{color:#7d8289; font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif; width:280px; -webkit-box-shadow:2px 2px 3px #aaa; -moz-box-shadow:2px 2px 3px #aaa; background:#fff; position:absolute; top:0px; right:50px; z-index:99999; display:none;filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#999999');}
+#Validform_msg .iframe{position:absolute; left:0px; top:-1px; z-index:-1;}
+#Validform_msg .Validform_title{line-height:25px; height:25px; text-align:left; font-weight:bold; padding:0 8px; color:#fff; position:relative; background-color:#000;}
+#Validform_msg a.Validform_close:link,#Validform_msg a.Validform_close:visited{line-height:22px; position:absolute; right:8px; top:0px; color:#fff; text-decoration:none;}
+#Validform_msg a.Validform_close:hover{color:#cc0;}
+#Validform_msg .Validform_info{padding:8px;border:1px solid #000; border-top:none; text-align:left;}
+
+
+/* 验证码部分 */
+
+.code{    
+background-image:url(../images/code.gif);    
+font-family:Arial;    
+font-style:italic;    
+color:#333; 
+font-weight: 600;   
+border:0;    
+padding:2px 3px;    
+letter-spacing:3px;    
+font-weight:bolder;    
+}   
+.change_picture{ font-size: 10px;}
+#input1{ width: 190px; /* margin-left: 16px; */ height: 24px; padding: 5px; color: #717171;}
+/* .agree_protocol input{ width: 10px; height: 10px;}
+ */.agree_protocol span{ color:#3d3d3d; font-size: 12px; padding-left: 10px; }
+.agree_protocol a{ color: #f00; font-size: 12px;}
+
+.add_six{ text-align: center; width: 50px; height: 35px; background-color: #ededed; position: absolute;  left: 1px; top: 6px;  line-height: 32px;}
+
+.registerform .mobile{ padding-left: 52px; width: 146px;}
+
+.registerform .get_code{ background-color: #e7ffcb;border:1px solid #c3e3a0;border-radius: 2px; color: #93cd55; width: 93px;font-size:14px; text-align: center; line-height: 10px; float: left; margin-top: 2px; margin-left: 10px; cursor: pointer; }
+#register-content .user-login { font-size: 13px; color: #808080; width: 200px;  letter-spacing: 1px;}
+
+.user-login .changeTo_login{ color: #0282bf; font-weight: 600;  font-size: 13px;}
+
+#login_content .user-register{ font-size: 13px;color: #808080;letter-spacing: 1px; float: right;   text-align: left; width:236px; line-height: 30px;}
+.user-register .changeTo_register{ font-size: 13px; color:#0282bf;  font-weight: 600; }
+input.user_name{ width: 196px;color: #c6c6c6; height:18px;}
+
+
+
+
+
+
+

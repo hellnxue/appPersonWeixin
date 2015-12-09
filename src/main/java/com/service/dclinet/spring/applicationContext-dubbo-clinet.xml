@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans        
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+ 
+    <dubbo:reference id="userService" interface="com.service.provider.UserService" />
+    
+    <dubbo:reference id="hrofirstUserService" interface="com.service.provider.HROFirstUserService" />
+
+    <dubbo:reference id="pageService" interface="com.service.provider.PageService" />
+    
+    <dubbo:reference id="smsService" interface="com.service.provider.SMSService" />
+     <!--体检预约 -->
+    <dubbo:reference id="medicalServiceService" interface="com.service.provider.MedicalServiceService" />
+     <!--收货地址管理 -->
+    <dubbo:reference id="receivingAddrServiceInterface" interface="com.service.provider.ReceivingAddrServiceInterface" />
+    
+    <dubbo:reference id="dubbo.centerUserService" interface="com.service.provider.CenterUserService"
+		timeout="200000" />
+		
+	<dubbo:reference id="dubbo.intentMgtService" interface="com.service.provider.IntentMgtService" />
+</beans>

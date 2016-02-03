@@ -34,9 +34,11 @@ import com.hrofirst.common.ZimuSort;
 import com.hrofirst.entity.City;
 import com.hrofirst.entity.Province;
 import com.hrofirst.entity.Salary;
+import com.hrofirst.entity.WeChatUploadFile;
 import com.hrofirst.service.CityService;
 import com.hrofirst.service.ProvinceService;
 import com.hrofirst.service.SalaryService;
+import com.hrofirst.service.WeChatUploadFileService;
 import com.hrofirst.util.Config;
 import com.hrofirst.util.MobileValidHelp;
 import com.hrofirst.util.ValidatorBasic;
@@ -65,10 +67,15 @@ public class JsonController {
     private CityService cityService;
     @Autowired
     private SalaryService salaryService;
+    
+    @Autowired
+    private WeChatUploadFileService weChatUploadFileService;
+    
     @Autowired
     private MedicalServiceService medicalServiceService; //体检预约接口
     @Autowired
     private ReceivingAddrServiceInterface receivingAddrServiceInterface; //收货地址管理接口
+    
     @RequestMapping("province")
     public List<Province> findAllProvince() {
         return provinceService.findByTypeNot(ProvinceService.ProvinceType.其他国家);
@@ -961,4 +968,34 @@ public class JsonController {
          	}
     	   	return result;
         }
+        
+        /**
+         * 员工资料上传--根据时间和删除标示查询员工资料 对接Jabava接口
+         */
+        
+    	@RequestMapping("/webApp/user/getEmployeeUploadFiles")
+    	@ResponseBody
+    	public String getUploadsFiles(HttpServletRequest request)  {
+    		
+    		String nowDate=request.getParameter("nowDate");
+    		
+    		//String nowDate="2016-01-26 17:51:48";
+    		
+    		List<WeChatUploadFile> list=null;
+    		
+    		if(nowDate!=null&&!nowDate.equals("")){
+    			
+    			list=weChatUploadFileService.getUploadFiles(nowDate);
+    		}else{
+    			return  "{\"errorMessage\":\"参数不正确！\"}";
+    		}
+    		
+    		if(list!=null&&list.size()>0){
+    			
+    			System.out.println(JSON.toJSON(list));
+    			
+    			return JSON.toJSON(list).toString();
+    		}
+    		return "{\"errorMessage\":\"没有相关数据！\"}";
+    	}
 }

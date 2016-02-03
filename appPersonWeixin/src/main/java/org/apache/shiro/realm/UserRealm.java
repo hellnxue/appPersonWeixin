@@ -215,4 +215,5 @@ public class UserRealm extends AuthorizingRealm {
 	public void setKey(String key) {
 		this.key = key;
 	}
+	
 }

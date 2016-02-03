@@ -98,17 +98,45 @@ public  class Tools {
         }  
     }  
     
+    public static Date getDateFormatString(String date){
+    	
+    	SimpleDateFormat formats = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date formatDate=null;
+		try {
+			formatDate = formats.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return formatDate;
+    }
+    
+    
     public static void main(String args[]){
+//    	SimpleDateFormat CurTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		Calendar Cal = Calendar.getInstance();
+//		String nowDate=CurTime.format(Cal.getTime());
+//		System.out.println(nowDate);
+//		
+//		String start=nowDate.substring(0,10)+" 09:00:00";
+//		String end=nowDate.substring(0,10)+" 18:00:00";
+//		System.out.println(start);
+//		System.out.println(end);
+//    	boolean f=Tools.isInDates();
+//    	System.out.println(f);
     	SimpleDateFormat CurTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar Cal = Calendar.getInstance();
-		String nowDate=CurTime.format(Cal.getTime());
+		String nowDate="2002-10-8 15:00:00";
+		try {
+			nowDate = CurTime.format(CurTime.parse( nowDate ));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(nowDate);
 		
-		String start=nowDate.substring(0,10)+" 09:00:00";
-		String end=nowDate.substring(0,10)+" 18:00:00";
-		System.out.println(start);
-		System.out.println(end);
-    	boolean f=Tools.isInDates();
-    	System.out.println(f);
+		//Tools.getDateFormatString("2002-10-8 15:00:00");
+		System.out.println(Tools.getDateFormatString("2002-10-8 15:00:00"));
     }
 }

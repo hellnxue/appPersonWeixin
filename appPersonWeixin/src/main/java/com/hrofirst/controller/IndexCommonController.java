@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +24,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.hrofirst.entity.News;
 import com.hrofirst.entity.Policy;
 import com.hrofirst.entity.Province;
@@ -794,25 +799,7 @@ public class IndexCommonController extends baseController{
         model.addAttribute("month", month);
         return "webApp/salary";
     }
-    public static void main(String args[]){
-//    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
-//    	Calendar cal = Calendar.getInstance();
-//        int day = cal.get(Calendar.DATE);
-//        int month = cal.get(Calendar.MONTH) + 1;
-//         System.out.println(month);
-//         
-//         GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
-//         Date date=new Date();
-// 		gc.setTime(date);
-// 		gc.add(Calendar.MONTH, -1);
-// 		System.out.println(sdf.format(gc.getTime()));
- 		String idcard="420626199309013017";//310109xxxxxxxx0018
- 		System.out.println(idcard.replace(idcard.substring(6,14), "xxxxxxxx"));
- 		String idcard15="130503670401001";
- 		System.out.println(idcard15.replace(idcard15.substring(6,12), "xxxxxx"));
- 		String mobile="13811431906";
- 		System.out.println(mobile.replace(mobile.substring(3,8), "xxxx"));
-    }
+  
     @RequestMapping("/webApp/walletintegration")
     public ModelAndView walletintegration(HttpServletRequest request, Model model) {
     	
@@ -1231,6 +1218,66 @@ public class IndexCommonController extends baseController{
         model.addAttribute("receivingAddrInfo",receivingAddrInfo);
     	return new ModelAndView("webApp/user/updateAddress"); 
     }
+    /**
+     * 跳转至资料上传页面
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/user/dataUpload")
+    public String upload(HttpServletRequest request, Model model) {
+    	 
+    	return "webApp/user/dataUpload"; 
+    }
     
-   
+    
+    /**
+     * 资料上传
+     */
+    @SuppressWarnings("rawtypes")
+	@RequestMapping("/webApp/user/uploadFile")
+	@ResponseBody
+	public String uploadFile(@RequestParam MultipartFile[] myfiles,HttpServletResponse response,HttpServletRequest request) throws Exception{
+    	
+    	//Map result=wechatFileService.uploadFiles(myfiles, response, request);
+    	Map result=weChatUploadFileService.uploadFiles(myfiles, response, request);
+     
+		return JSON.toJSONString(result);
+	}
+  
+    public static void main(String args[]){
+//    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
+//    	Calendar cal = Calendar.getInstance();
+//        int day = cal.get(Calendar.DATE);
+//        int month = cal.get(Calendar.MONTH) + 1;
+//         System.out.println(month);
+//         
+//         GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
+//         Date date=new Date();
+// 		gc.setTime(date);
+// 		gc.add(Calendar.MONTH, -1);
+// 		System.out.println(sdf.format(gc.getTime()));
+// 		String idcard="420626199309013017";//310109xxxxxxxx0018
+// 		System.out.println(idcard.replace(idcard.substring(6,14), "xxxxxxxx"));
+// 		String idcard15="130503670401001";
+// 		System.out.println(idcard15.replace(idcard15.substring(6,12), "xxxxxx"));
+// 		String mobile="13811431906";
+// 		System.out.println(mobile.replace(mobile.substring(3,8), "xxxx"));
+ 		
+    /*	String path=System.getProperty("user.dir");
+    	String p=System.getProperty("user.dir")+"\\uploadFile\\hello2.txt";
+    	System.out.println("path="+p);
+ 		try {
+			FileUtil.newFile(p);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+ 		
+ 	  
+ 		
+ 		Map<String,String> map = new HashMap<String,String>();
+ 		System.out.println(map.get("hh"));
+ 		System.out.println((String)map.get("hh"));
+    }
 }

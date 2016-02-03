@@ -7,6 +7,7 @@ import com.hrofirst.service.NewsService;
 import com.hrofirst.service.PolicyService;
 import com.hrofirst.service.ProvinceService;
 import com.hrofirst.service.WeChatService;
+import com.hrofirst.service.WeChatUploadFileService;
 import com.hrofirst.service.WebAppMenuService;
 import com.service.provider.CenterUserService;
 import com.service.provider.ReceivingAddrServiceInterface;
@@ -41,4 +42,7 @@ public class baseController {
 	
     @Autowired
     CenterUserService centerUserService; 
+    
+    @Autowired
+    WeChatUploadFileService weChatUploadFileService; 
 }

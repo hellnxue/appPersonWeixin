@@ -1,9 +1,9 @@
 package com.hrofirst.service;
 
 import com.fnst.es.common.service.BaseService;
-import com.hrofirst.entity.Policy;
 import com.hrofirst.entity.Salary;
 import com.hrofirst.repository.SalaryRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,4 +23,6 @@ public class SalaryService extends BaseService<Salary, Long> {
             return null;
         return salaryList.get(0);
     }
+    
+    
 }

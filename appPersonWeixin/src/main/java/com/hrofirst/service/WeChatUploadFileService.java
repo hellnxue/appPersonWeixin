@@ -20,8 +20,11 @@ import com.fnst.es.common.repository.hibernate.HibernateUtils;
 import com.fnst.es.common.service.BaseService;
 import com.hrofirst.entity.WeChatUploadFile;
 import com.hrofirst.repository.WeChatUploadFileRepository;
+import com.hrofirst.util.Config;
+import com.hrofirst.util.FetchToken;
 import com.hrofirst.util.FileUtil;
 import com.hrofirst.util.HrHelperFileUploader;
+import com.hrofirst.util.RequestService;
 import com.service.provider.entity.CenterSysUser;
 @Service
 public class WeChatUploadFileService extends BaseService<WeChatUploadFile, Long>{
@@ -45,6 +48,11 @@ public class WeChatUploadFileService extends BaseService<WeChatUploadFile, Long>
 	     */
 	    public  Map uploadFiles(MultipartFile[] myfiles, HttpServletResponse response, HttpServletRequest request)throws Exception{
 	    	
+    	    String server = Config.getHroUrl();//"http://neice.ezhiyang.com"
+    	    FetchToken fetchToken = new FetchToken(server + "/open/authorize", "aiyuangong",  "02b06c0c-da69-44a6-ab15-4bf2e819ba57");
+    	    RequestService requestService = new RequestService(server + "/open/rest", fetchToken);
+    	    Map<String, Object> entity = new HashMap<String, Object>();
+    	    
 	    	Session session = HibernateUtils.getSessionFactory(RepositoryHelper.getEntityManager()).openSession();
 	    	Transaction tx =session.beginTransaction();
 	    	 
@@ -62,16 +70,20 @@ public class WeChatUploadFileService extends BaseService<WeChatUploadFile, Long>
 				if (!myfile.isEmpty()) {
 					
 	    			
-	    			
 	    		    fileName = new Date().getTime()+"."+FileUtil.getSuffixName(myfile.getOriginalFilename());//处理后的文件名称
 	    			
 	    			FileUtils.copyInputStreamToFile(myfile.getInputStream(), new File(realPath, fileName)); // 上传文件到项目根目录下的uploadFile
 	    			
-	    			result=HrHelperFileUploader.upload(realPath+fileName);//上传文件到服务器
+	    			result=HrHelperFileUploader.upload(realPath+fileName);//上传文件到服务器接口
 	    			
 	    			
 	    			if(result.get("realUrl")!=null&&!(result.get("realUrl")).equals("")){
 	    				
+	    				entity.put("cardId", userInfo.getOrgPerson().getCardNum());
+	    				entity.put("fileId", result.get("fileId"));
+	    			    Map<String, Object> results = requestService.invoke("uploadFileToEmp", entity);//上传到服务器后调用第二个接口
+	    			    
+	    			    
 	    				realUrl=result.get("realUrl").toString();
 	    				map.put("realUrl"+i, realUrl);
 	    				

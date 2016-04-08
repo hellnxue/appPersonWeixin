@@ -9,6 +9,11 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
+		 <dependency>
+		  <groupId>commons-codec</groupId>
+		  <artifactId>commons-codec</artifactId>
+		  <version>1.10</version>
+	    </dependency>
 	    <dependency>
 	      <groupId>com.fnst</groupId>
 	      <artifactId>es-common</artifactId>

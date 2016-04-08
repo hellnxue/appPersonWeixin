@@ -26,7 +26,7 @@ public class MobileValidHelp {
 	private static final String mhost = "211.136.163.68";
 	private static final String mport = "9981";
 	private static final String maccountId = "10657109030880";
-	private static final String mpassword = "Admin9097";
+	private static final String mpassword = "Admin9096";
 	private static final String mserviceId = "1";
 	private static MobileRecvListener listener;
 

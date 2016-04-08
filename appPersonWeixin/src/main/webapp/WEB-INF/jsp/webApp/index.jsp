@@ -7,35 +7,44 @@
   <div class="am-titlebar-right"> <a title="" class="header-notice" href="msgs"></a><c:if test="${unReadPersonal>0}"> <span class="am-badge am-badge-danger am-round">${unReadPersonal}</span></c:if>  </div>
 </header>
 
-<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
+<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false,touch:false}'  >
   <ul class="am-slides">
-    <li> <img src="${ctx }/static/assets/images/fl01.jpg"> </li>
+    <li> <img src="${ctx }/static/assets/images/fl04.png"> </li>
   </ul>
 </div>
 
 <div class="index_menu">
   <ul class="am-gallery am-avg-sm-2 am-gallery-default white-bg" data-am-gallery="{ pureview: true }">
-     <!-- 社保查询 -->
-    <li id="sbcx">
-      <div class="am-gallery-item"> <a href="${ctx}/webApp/nationalGuard" class=""> <img src="${ctx}/static/assets/images/indexico01.png"/>
-        </a> </div>
-    </li>
-     <!-- 工资单查询 -->
-    <li id="gzd">
-      <div class="am-gallery-item"> <a href="${ctx}/webApp/salary" > <img src="${ctx}/static/assets/images/indexico02.png" alt="" />
-        </a> </div>
-    </li>
-     <!-- 工资宝 -->
-    <li id="gzb"> 
-      <div class="am-gallery-item"> <a href="${ctx}/webApp/walletintegration" class=""> <img src="${ctx}/static/assets/images/indexico03.png"/>
-        </a> </div>
-    </li>
-     <!-- 体检预约 -->
+    <!-- 资料上传-->
     <li id="tjyy">
-      <div class="am-gallery-item"> <a href="${ctx }/webApp/tijian/tijian" > <img src="${ctx}/static/assets/images/indexico04.png" alt="" />
+      <div class="am-gallery-item"> <a href="${ctx }/webApp/user/dataUpload" > <img src="${ctx}/static/assets/images/fileUploads.png" alt="" />
         </a> </div>
     </li>
-
+     <!-- 员工工资随时查 -->
+    <li id="gzd">
+      <div class="am-gallery-item"> <a href="${ctx}/webApp/salary" > <img src="${ctx}/static/assets/images/salaryData.png" alt="" />
+        </a> </div>
+    </li>
+     <!-- 企业数据直通车 -->
+    <li id="sbcx">
+      <div class="am-gallery-item"> <a href="${ctx}/webApp/nationalGuard" class=""> <img src="${ctx}/static/assets/images/orgData.png"/>
+        </a> </div>
+    </li>
+    <!--官方数据直通车 -->
+    <li id="gzd">
+      <div class="am-gallery-item"> <a href="${ctx }/webApp/sbGjjTools/officialData"> <img src="${ctx}/static/assets/images/officialData.png"/>
+        </a> </div>
+    </li>
+    <!--体检预约 -->
+    <li id="tjyy">
+      <div class="am-gallery-item"> <a href="${ctx }/webApp/tijian/tijian" > <img src="${ctx}/static/assets/images/tijianData.png" alt="" />
+        </a> </div>
+    </li>
+    <!--移动签到 -->
+    <li id="tjyy">
+      <div class="am-gallery-item"> <a href="${ctx }/webApp/empCheck" > <img src="${ctx}/static/assets/images/empChecks.png" alt="" />
+        </a> </div>
+    </li>
   </ul>
 </div>
 
@@ -66,7 +75,7 @@
 </div>
 </div>
 <script>
-
+ 
 $(function() {
   var orgidArr=["354"];//企业id数组
   /**

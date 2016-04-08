@@ -25,6 +25,7 @@
         <c:if test="${errorMessage==2 }"><span style="color:red">没有该用户！</span></c:if>
         <c:if test="${errorMessage==3 }"><span style="color:red">密码输入错误，请重新输入！</span></c:if>
          <c:if test="${errorMessage==4 }"><span style="color:red">请重新输入用户名,密码！</span></c:if>
+          <c:if test="${errorMessageInfo!=null }"><span style="color:red">${errorMessageInfo}</span></c:if>
       <p class="loginbtn">
         <input type="submit" class="am-btn am-btn-danger am-btn-block am-btn-lg ygbtn" value="登录">
       </p>
@@ -36,5 +37,8 @@
   </form>
 </div>
 <es:webAppNewLoginFooter/>
+ <script language="javaScript">
+   javascript:window.history.forward(1);
+  </script>
 </body>
 </html>

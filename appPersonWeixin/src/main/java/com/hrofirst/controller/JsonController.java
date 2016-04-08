@@ -20,6 +20,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.sd4324530.fastweixin.api.TemplateAPI;
 import com.hrofirst.common.ZimuSort;
 import com.hrofirst.entity.City;
 import com.hrofirst.entity.Province;
@@ -55,7 +58,8 @@ import com.service.provider.entity.ReturnS;
  */
 @RestController
 public class JsonController {
-	
+	private static final Logger LOG = LoggerFactory
+			.getLogger(JsonController.class);
 	HttpClient client = HttpClientBuilder.create().build();
 	
 	@Autowired
@@ -273,26 +277,40 @@ public class JsonController {
     }
     
     /**
-     * 移动签到
+     * 移动签到 ：上班签到和下班签到
      * @param request
      * @param addressStr
      * @return
      */
     @RequestMapping("hrhelper-platform/empCheck")
     public String empCheck(HttpServletRequest request, @RequestParam String aType, @RequestParam String aForget, @RequestParam String idCard) {
- 
+    	LOG.debug("移动签到.....");
+    	String params="";
 		String username = (String) request.getSession().getAttribute("ZhiyangUserName");   
 		String longitude = request.getParameter("longitude");
 		String latitude = request.getParameter("latitude");
-		String address = request.getParameter("address");
+		String performance = request.getParameter("performance");
 		
-    	System.out.println(longitude+"|"+latitude+"|"+address);
-//    	
-//    	return "{\"code\":\"0\", \"message\":\"success\"}";
-		
-    	HttpPost httpost = getPostMethod("http://kaoqin.ezhiyang.com/attendance/ajax/create.e?idCard="+idCard+"&aForget="+aForget+"&aType="+aType+"&author="+username+"&pX="+longitude+"&pY="+latitude+"&orgId="+username);
-    	httpost.addHeader("Accept", "application/json");
+    	System.out.println(longitude+"|"+latitude+"|");
+    	LOG.debug("经度："+longitude );
+    	LOG.debug("纬度："+latitude );
     	
+    	CenterSysUser userInfo = (CenterSysUser) request.getSession()
+				.getAttribute("userInfo");
+		 
+		Long hroOrgId=userInfo.getOrgOrganization().getHroOrgId();
+        //error position:121.543738  38.231596
+    	//正式：http://kaoqin.ezhiyang.com
+		//测试：http://bakkaoqin.ezhiyang.com
+		if(aType.equals("3")){
+			params="aType="+aType+"&author="+username+"&orgId="+hroOrgId+"&performance="+performance+"&pX="+longitude+"&pY="+latitude+"&idCard="+idCard;
+		}else{
+			
+			params="idCard="+idCard+"&aForget="+aForget+"&aType="+aType+"&author="+username+"&pX="+longitude+"&pY="+latitude+"&orgId="+hroOrgId;
+		}
+		
+    	HttpPost httpost = getPostMethod(Config.getKaoqinUrl()+"/attendance/ajax/create.e?"+params);
+    	httpost.addHeader("Accept", "application/json");
         try {
     		HttpResponse response = client.execute(httpost);
     		String result = EntityUtils.toString(response.getEntity(), "utf-8");
@@ -305,6 +323,8 @@ public class JsonController {
         
         return "{\"message\":\"success\"}";
     }  
+    
+    
     /**
      *  根据手机号码判断账户是否被激活
      * @param mobile

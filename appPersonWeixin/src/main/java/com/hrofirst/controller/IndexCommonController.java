@@ -1,5 +1,6 @@
 package com.hrofirst.controller;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -29,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hrofirst.entity.News;
 import com.hrofirst.entity.Policy;
 import com.hrofirst.entity.Province;
@@ -36,7 +43,9 @@ import com.hrofirst.entity.WeChatUser;
 import com.hrofirst.entity.WebAppMenu;
 import com.hrofirst.jms.sender.apiDataJMSSender;
 import com.hrofirst.service.ProvinceService;
+import com.hrofirst.util.BaobeikejiClient;
 import com.hrofirst.util.Config;
+import com.hrofirst.util.TripleDES;
 import com.hrofirst.util.ValidatorBasic;
 import com.service.provider.CenterUserService;
 import com.service.provider.entity.CenterSysUser;
@@ -45,6 +54,7 @@ import com.service.provider.entity.ReturnS;
 @Controller
 public class IndexCommonController extends baseController{
 	
+	HttpClient client = HttpClientBuilder.create().build();
 	public String apptype="";//登出时保存apptype类型    
 	public String openid="";//登出时保存openid参数
 
@@ -83,7 +93,7 @@ public class IndexCommonController extends baseController{
     		model.addAttribute("appName", request.getSession().getAttribute("appName"));
     		model.addAttribute("appType", request.getSession().getAttribute("appType"));
     	}else{
-    		request.getSession().setAttribute("appName", "智阳帮手");
+    		request.getSession().setAttribute("appName", "员工帮手");
     	}
     	
     	String receiver = "333232312143314";
@@ -100,7 +110,7 @@ public class IndexCommonController extends baseController{
 					"ZhiyangUserName");
 			CenterSysUser userInfo = (CenterSysUser) request.getSession()
 					.getAttribute("userInfo");
-			
+			userInfo.getOrgOrganization().getHroOrgId();
 			model.addAttribute("loginname", name);
 			model.addAttribute("orgid",userInfo.getOrgUser().getOrgId());
 			model.addAttribute("userName", userInfo.getOrgPerson().getName());
@@ -809,21 +819,21 @@ public class IndexCommonController extends baseController{
     
     @RequestMapping("/webApp/empCheck")
     public ModelAndView empCheck(HttpServletRequest request, Model model) {
-    	String cardId = request.getParameter("cardId");
-    	
-    	if (cardId == null)
-    		cardId = "xxx";
-
-    	if ( request.getSession().getAttribute("IdCard") != null){
-    		cardId = (String) request.getSession().getAttribute("IdCard"); 
-    	}
-    	
-    	if (cardId.equals("")){
-    		CenterSysUser userInfo = (CenterSysUser) request.getSession()
-    				.getAttribute("userInfo");
+    	String cardId ="";
+//    	String cardId = request.getParameter("cardId");
+//    	
+//    	if (cardId == null)
+//    		cardId = "xxx";
+//
+//    	if ( request.getSession().getAttribute("IdCard") != null){
+//    		cardId = (String) request.getSession().getAttribute("IdCard"); 
+//    	}
+//    	
+//    	if (!cardId.equals("")){
+    		CenterSysUser userInfo = (CenterSysUser) request.getSession().getAttribute("userInfo");
     		cardId = userInfo.getOrgPerson().getCardNum();
-    		model.addAttribute("hroOrgId", userInfo.getOrgOrganization().getHroOrgId());
-    	}
+    		System.out.println(userInfo.getOrgOrganization().getHroOrgId());
+    	//}
     	
         model.addAttribute("cardId", cardId);
 
@@ -1244,6 +1254,127 @@ public class IndexCommonController extends baseController{
      
 		return JSON.toJSONString(result);
 	}
+    /**
+     * 社保公积金查询工具首页
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/sbGjjTools/officialData")
+    public String sbGjjOfficialData(HttpServletRequest request, Model model) {
+    	
+    	return "webApp/sbGjjTools/officialData"; 
+    }
+    
+    /**
+     * 社保公积金查询工具首页
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/sbGjjTools/index")
+    public String sbGjjIndex(HttpServletRequest request, Model model) {
+    	
+    	return "webApp/sbGjjTools/index"; 
+    }
+    
+    
+    /**
+     * 公积金详情页面
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/sbGjjTools/detail_paf")
+    public String sbGjjDetailPaf(HttpServletRequest request, Model model) {
+    	String jsonStr="{\"errorMessage\":\"该用户不存在！\",\"userName\":\"hehe\"}";
+    	//String params="?sKey=f05ebcc0eb47cfdd8d4aee4b584e0b7c&type="+type+"&name="+name+"&pwd="+pwd+"&loginType=&idcard=&name=&vCode=&sid=";
+    	String type=request.getParameter("type");
+    	String name=request.getParameter("name");
+    	String pwd=request.getParameter("pwd");
+    	Map<String, Object> paramMap = new HashMap<String, Object>();
+    	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
+    	
+    	paramMap.put("sKey", "f05ebcc0eb47cfdd8d4aee4b584e0b7c");
+    	if(type!=null&&!type.equals("")){
+    		paramMap.put("type", Integer.parseInt(type));
+    	}
+    	if(name!=null&&!name.equals("")){
+    		paramMap.put("cardNo", name);
+    	}
+		if(pwd!=null&&!pwd.equals("")){
+			paramMap.put("pwd", pwd);
+		}
+    	 
+    	
+		try {
+			jsonStr = baobeikejiClient.invoke(paramMap);
+			System.out.println(jsonStr);
+			JSONObject object0 = JSON.parseObject(jsonStr);
+		      
+		    int code= (Integer) object0.get("code");
+		    
+		    if(code==10008){//验证码错误，重新请求
+		    	JSONObject object1 = JSON.parseObject(object0.get("data").toString());
+		    	paramMap.put("vCode", object1.get("sid"));
+		    	paramMap.put("sid", object1.get("url"));
+		    	jsonStr = baobeikejiClient.invoke(paramMap);
+		    }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	model.addAttribute("result", jsonStr);
+    	return "webApp/sbGjjTools/detail_paf"; 
+    }
+    
+    /**
+     * 社保详情页面
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/sbGjjTools/detail")
+    public String sbGjjDetail(HttpServletRequest request, Model model) {
+    	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
+    	String type=request.getParameter("type");
+    	String idcard=request.getParameter("idcard");
+    	String pwd=request.getParameter("pwd");
+    	Map<String, Object> paramMap = new HashMap<String, Object>();
+    	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
+    	
+    	paramMap.put("sKey", "f05ebcc0eb47cfdd8d4aee4b584e0b7c");
+    	if((type!=null&&!type.equals(""))&&(idcard!=null&&!idcard.equals(""))&&(pwd!=null&&!pwd.equals(""))){
+    		paramMap.put("type", Integer.parseInt(type));
+    		paramMap.put("cardNo", idcard);
+    		paramMap.put("pwd", pwd);
+    	}else{
+    		model.addAttribute("result", "{\"errorMessage\":\"输入错误！\"}");
+        	return "webApp/sbGjjTools/detail"; 
+		}
+    	 
+		try {
+			jsonStr = baobeikejiClient.invoke(paramMap);
+//			System.out.println(jsonStr);
+			JSONObject object0 = JSON.parseObject(jsonStr);
+		      
+		    int code= (Integer) object0.get("code");
+		    
+		    if(code==10008){//验证码错误，重新请求
+		    	JSONObject object1 = JSON.parseObject(object0.get("data").toString());
+		    	paramMap.put("vCode", object1.get("sid"));
+		    	paramMap.put("sid", object1.get("url"));
+		    	jsonStr = baobeikejiClient.invoke(paramMap);
+		    }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+		model.addAttribute("result", jsonStr);
+    	return "webApp/sbGjjTools/detail"; 
+    }
   
     public static void main(String args[]){
 //    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
@@ -1275,9 +1406,15 @@ public class IndexCommonController extends baseController{
 		}*/
  		
  	  
+ 		String jsonStr="{ \"code\": 10008, \"data\" : { \"sid\" :\"22016031710194056ea143cdbfe4\"   , \"url\": \"hello\"  } }";
+    	JSONObject object0 = JSON.parseObject(jsonStr);
+ 		System.out.println(object0.get("code"));
  		
- 		Map<String,String> map = new HashMap<String,String>();
- 		System.out.println(map.get("hh"));
- 		System.out.println((String)map.get("hh"));
+ 		JSONObject object1 = JSON.parseObject(object0.get("data").toString());
+ 		
+ 		System.out.println(object1.get("sid"));
+ 		System.out.println(object1.get("url"));
+ 		
+ 		
     }
 }

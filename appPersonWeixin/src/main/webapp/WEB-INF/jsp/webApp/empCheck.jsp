@@ -9,35 +9,56 @@
 </header>
 <div class="am-sign">
 	<h3><i></i><a onClick="getLocation();">点击重新定位</a></h3>
-    <div class="maps" id="allmap" style="width:100%; height:300px;"></div>
+    <div class="maps" id="allmap" style="width:100%; min-height:500px;"></div>
   
-    <div class="btns am-g">
-        <div class="am-u-sm-4"><button type="button" data-type="inclass" class="am-btn am-btn-primary am-radius am-btn-block sign_btn_a cur">上 班</button></div>
-        <div class="am-u-sm-4" style="text-align:center;display:none"><button type="button" class="am-round am-btn am-btn-block sign_btn_c" id="doc-confirm-toggle">签 到</button></div>
-        <div class="am-u-sm-4"><button type="button" data-type="afterwork" class="am-btn am-btn-primary am-radius am-btn-block sign_btn_a">下 班</button></div>
-      </form>
+    <div class="btns am-g" style="position:fixed; bottom:50px;">
+        <div class="am-u-sm-4"><button type="button" data-type="1" class="am-btn am-btn-primary am-radius am-btn-block sign_btn_a cur">上班签到</button></div>
+        <div class="am-u-sm-4" style="text-align:center;"><button type="button" class="am-round am-btn am-btn-block sign_btn_c" id="doc-confirm-toggle">业绩签到</button></div>
+        <div class="am-u-sm-4"><button type="button" data-type="2" class="am-btn am-btn-primary am-radius am-btn-block sign_btn_a">下班签到</button></div>
     </div>
 </div>
 
 <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
   <div class="am-modal-dialog">
     <div class="am-modal-tit" id="am-modal-tit">
-     亲爱的用户张佳丽，您于09:01成功签到！您已连续签到5天。
+    	 亲爱的用户张佳丽，您于09:01成功签到！您已连续签到5天。
     </div>
       <div class="btns am-g">
-      <a class="am-btn am-btn-primary am-radius am-u-sm-12 am-modal-btn" data-am-modal-cancel >确 定</a>
+      <a class="am-btn am-btn-primary am-radius am-u-sm-12 am-modal-btn" data-am-modal-confirm >确 定</a>
+      </div>
+  </div>
+</div>
+
+<div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm-performance">
+  <div class="am-modal-dialog">
+   <div class="am-modal-hd"> 
+      <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+    </div>
+    <div class="am-modal-tit"  >
+    
+	      <input type="text" class="am-modal-prompt-input" id="performace" maxlength="30" placeholder="请填写今日销售量" required> 
+	      
+	 </div>
+	 <%-- <div style="text-align:left;margin-left:24px;">
+	    <img src="${ctx}/static/assets/images/sign_cb.png" /> 覆盖今日已提交数据    
+	 </div> --%>
+	<%--  <div class="am-modal-tit" >
+	    <img src="${ctx}/static/assets/images/sign_cb.png" data-status="1"/> 覆盖今日已提交数据&nbsp;&nbsp;
+	 </div> --%>
+      <div class="btns am-g">
+          <a class="am-btn am-btn-primary am-radius am-u-sm-12 am-modal-btn  am-disabled" data-am-modal-confirm id="performaceBtn">确 定</a>
       </div>
   </div>
 </div>
 
 <es:webAppNewFooter/>
-
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>  
 <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script> 
     
 <!--在这里编写你的代码-->
 
 <script type="text/javascript">
+var address="";//地理位置
 var lonstr;
 var latstr;
 var typeint="inclass";
@@ -77,8 +98,10 @@ function mapIt(position) {
 			var addComp = rs.addressComponents;
 			if (addComp.province !== addComp.city) {
 				var sContent = "<div><h4>你当前的位置是：</h4>" + "<p style='margin:0;line-height:1.5;font-size:12px;text-indent:2em'>" + addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + "</p>" + "</div>";
+			    address= addComp.province   + addComp.city   + addComp.district  + addComp.street;
 			} else {
 				var sContent = "<div><h4>你当前的位置是：</h4>" + "<p style='margin:0;line-height:1.5;font-size:12px;text-indent:2em'>" + addComp.city + ", " + addComp.district + ", " + addComp.street + "</p>" + "</div>";
+				address=  addComp.city   + addComp.district  + addComp.street;
 			}
 			var infoWindow = new BMap.InfoWindow(sContent);
 			map.openInfoWindow(infoWindow, point);
@@ -115,50 +138,103 @@ $(document).ready(function(){
 });
 </script>
 <script type="text/javascript">
+/**
+ * 签到
+ */
+function signInAndOut(type){
+	 
+      var tip="";
+ 	  var mdlObj={
+ 	    relatedTarget: this,
+	    onConfirm: function(options) {
+	        }
+	         
+	      };
+ 	  var jsonObj={
+			aType: type, aForget: 1, idCard: "${cardId}", longitude: lonstr, latitude: latstr
+	  };
+ 	  if(type==3){
+ 		 jsonObj.performance=$("#performace").val();
+ 	  }
+	  $.getJSON("${ctx}/hrhelper-platform/empCheck",jsonObj, function (data) {
+	  	if (data.err === 0)	{      
+	  		if(type==1){
+  		       tip="上班签到已成功！";
+  			}else if(type==2){
+  			   tip="下班签到已成功！";
+  			}else if(type==3){
+  			   tip="提交成功！";
+  			}
+	  	}else if (data.errMsg=== "-1"){
+	  		tip="您已经签过了！" ;
+	  	}else if (data.errMsg === "-2"){
+	  		tip="您今日不需要签到！" ;
+	  	}else if (data.errMsg === "-3"){
+	     	 tip="您还未上班签到！" ;
+	  	}else if (data.errMsg  === "-4"){
+	  		tip="请求超时或用户未找到！" ;
+	     		mdlObj.closeViaDimmer=false;
+	     		mdlObj.onConfirm=function(options) {
+			       		location.replace("${ctx}/webApp/logout");
+		        };
+	  	}else if (data.errMsg === "-5"){
+	  		tip="考勤地点错误！" ;
+	  	}else{
+	  		tip="未知错误！" ;
+	  	}
+			
+	  	$("#am-modal-tit").html(tip);
+	    $('#my-confirm').modal(mdlObj);
+	  });	  
+	   
+	
+}
 $(function() {
 
-  $('#doc-modal-list').find('.am-icon-close').add('#doc-confirm-toggle').
-    on('click', function() {
+  $("button[data-type]"). on('click', function() {
     
-		  var typ =1;
-		  
-		  if (typeint === "afterwork")
-		  	typ = 2;
-     
-        $.getJSON("${ctx}/hrhelper-platform/empCheck", {
-			aType: typ, aForget: 1, idCard: "${cardId}", longitude: lonstr, latitude: latstr, orgId: "${hroOrgId}"
-        }, function (data) {
-        	if (data.errMsg === "0")
-        	{
-	       		$("#am-modal-tit").html("签到成功！");
-        	}else if (data.errMsg === "-1"){
-	       		$("#am-modal-tit").html("已经签过了！");
-        	}else if (data.errMsg === "-2"){
-	       		$("#am-modal-tit").html("不需要签到！");
-        	}else if (data.errMsg === "-3"){
-	       		$("#am-modal-tit").html("还没有签到那！");
-        	}else if (data.errMsg === "-4"){
-	       		$("#am-modal-tit").html("请使用正确身份证号登陆后签到！");
-        	}else if (data.errMsg === "-5"){
-	       		$("#am-modal-tit").html("考勤地点错误！");
-        	}else{
-	       		$("#am-modal-tit").html("未知错误！");
-        	}
-
-	      $('#my-confirm').modal({
-	        relatedTarget: this,
-	        onConfirm: function(options) {
-	        },
-	        // closeOnConfirm: false,
-	        onCancel: function() {
-	        }
-	      });
-        });	
+	  var type=$(this).data("type");
+	  signInAndOut(type);
     
     });
-});
+  
+  $("#doc-confirm-toggle").on("click",function(){
+	  
+	  $('#my-confirm-performance').modal({
+	 	    relatedTarget: this,
+		    onConfirm: function(options) {
+		    	signInAndOut(3);
+		        }
+		         
+		      });
+	  
+  });
+  
+  $("#my-confirm-performance img").on("click",function(){
+	  //${ctx}/static/assets/images/sign_cm.png
+	  if($(this).attr("src")=="${ctx}/static/assets/images/sign_cm.png"){
+		  $(this).attr("src","${ctx}/static/assets/images/sign_cb.png");
+	  }else{
+		  $(this).attr("src","${ctx}/static/assets/images/sign_cm.png");
+	  }
+	  
+	}); 
+  
+  inputDisabled();
+  $("#performace").on("keyup",function(){
+	  inputDisabled();
+  });
+  
+	  
+  });
+  function inputDisabled(){
+	  if($("#performace").val().length>0){
+		  $("#performaceBtn").removeClass("am-disabled");
+	  }else{
+		  $("#performaceBtn").addClass("am-disabled");
+	  }
+  }
 </script>
-
 
 </body>
 </html>

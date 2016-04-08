@@ -20,6 +20,7 @@ import com.fnst.es.common.repository.support.SimpleBaseRepositoryFactoryBean;
 import com.fnst.es.common.utils.security.Md5Utils;
 import com.hrofirst.entity.WeChatUser;
 import com.hrofirst.service.WeChatService;
+import com.hrofirst.util.ValidatorBasic;
 import com.service.provider.CenterUserService;
 import com.service.provider.entity.CenterSysUser;
 import com.service.provider.entity.CenterUserInfo;
@@ -111,11 +112,22 @@ public class UserRealm extends AuthorizingRealm {
 		Subject currentUser = SecurityUtils.getSubject();
 		Session session = currentUser.getSession();
 		if(StringUtils.isBlank(token.getUsername())){
+			session.setAttribute("errorMessageInfo", null);
+			session.setAttribute("errorMessage", null);
 			session.setAttribute("errorMessage", 4);
 			return null;
 		}
 		String userName = token.getUsername();
-		String password = String.valueOf(token.getPassword());
+		String password="";
+		if(token.getPassword()!=null&&!token.getPassword().equals("")){
+		   password = String.valueOf(token.getPassword());
+		}else{
+			session.setAttribute("errorMessageInfo", null);
+			session.setAttribute("errorMessage", null);
+			session.setAttribute("errorMessageInfo", "请输入密码！");
+			return null;
+		}
+		
 		// 根据登录用户名获取用户信息
 		ReturnS userS = null;		//用户验证相关信息
 		ReturnS userGetInfo = null;	//根据用户名称获得的用户信息
@@ -124,7 +136,7 @@ public class UserRealm extends AuthorizingRealm {
 		// 智阳用户名、密码登录  
 		try {
 			if (!"______".equals(password)) {
-				//根据登录验证拿用户的真正loginName
+				//根据输入的用户名和密码登录验证拿用户的真正loginName
 				userS = centerUserService.loginAuth(
 						CenterUserService.LOGIN_TYPE_LOGINNAME,
 						CenterUserService.USER_TYPE_INDIVIDUAL, userName,
@@ -136,14 +148,34 @@ public class UserRealm extends AuthorizingRealm {
 							userName = centerUserInfo.getLoginName();
 						}
 					}
-					//根据用户名获取用户信息
+					//根据登录验证取得的真正用户名获取用户信息
 					userGetInfo = centerUserService.getCenterUser(userName,
 							CenterUserService.SYSTEM_ID_HF);
 					userInfo = (CenterSysUser) userGetInfo.getResult();
 					if (!userGetInfo.getSuccess()) {
+						//没有该用户
+						session.setAttribute("errorMessageInfo", null);
+						session.setAttribute("errorMessage", null);
 						session.setAttribute("errorMessage", 2);
 						return null;
 					}
+				}else{
+					//此用户登录验证失败 密码错误或者没有该用户
+					session.setAttribute("errorMessageInfo", null);
+					session.setAttribute("errorMessage", null);
+					session.setAttribute("errorMessageInfo", userS.getMsg());
+					
+					//登录用户名是手机号的话，且是待激活状态，给个提示：请激活
+					if(StringUtils.isNotBlank(userName)){
+						if(ValidatorBasic.isMobile(userName)){
+							ReturnS result = centerUserService.getOtherUserInfo(userName);
+							if (result.getSuccess()){
+								
+								session.setAttribute("errorMessageInfo", "该手机用户待激活，请先激活！");
+							}
+							
+						  }
+					} 
 				}
 			}else {
 				//对应自动登录，直接根据用户名获取用户信息
@@ -151,6 +183,9 @@ public class UserRealm extends AuthorizingRealm {
 						CenterUserService.SYSTEM_ID_HF);
 				userInfo = (CenterSysUser) userGetInfo.getResult();
 				if (!userGetInfo.getSuccess()) {
+					//没有该用户
+					session.setAttribute("errorMessageInfo", null);
+					session.setAttribute("errorMessage", null);
 					session.setAttribute("errorMessage", 2);
 					return null;
 				}				
@@ -198,7 +233,22 @@ public class UserRealm extends AuthorizingRealm {
 				System.out.println("new Date()保存输入结果============================="+new Date());
 				return sa;
 			} else {
-				session.setAttribute("errorMessage", 3);
+				//此用户登录验证失败 密码错误或者没有该用户
+				session.setAttribute("errorMessageInfo", null);
+				session.setAttribute("errorMessage", null);
+				session.setAttribute("errorMessageInfo", userS.getMsg());
+				
+				//登录用户名是手机号的话，且是待激活状态，给个提示：请激活
+				if(StringUtils.isNotBlank(userName)){
+					if(ValidatorBasic.isMobile(userName)){
+						ReturnS result = centerUserService.getOtherUserInfo(userName);
+						if (result.getSuccess()){
+							
+							session.setAttribute("errorMessageInfo", "该手机用户待激活，请先激活！");
+						}
+						
+					  }
+				} 
 				return null;
 			}
 		}

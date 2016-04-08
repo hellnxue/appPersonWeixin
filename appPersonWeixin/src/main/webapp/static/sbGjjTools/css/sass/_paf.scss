@@ -1,0 +1,14 @@
+.paf li a {
+    @extend %clearfix;
+    @extend %list;
+    position:relative;
+    display:block;
+    padding-left:px2rem(46);
+    color:$colorText2;
+    span {
+        @extend %fr;
+        margin-right:px2rem(32);
+        color:#c9c9c9;
+        font-size:px2rem(48);
+    }
+}

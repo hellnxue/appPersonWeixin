@@ -187,6 +187,19 @@ public class Config {
 	public static String getCasservice() {
 		return pps.getProperty("casservice");
 	}
+	
+	public static String getBaobeikejiUrl() {
+		return pps.getProperty("baobeikeji_url");
+	}
+	
+	
+	public static String getHroUrl() {
+		return pps.getProperty("hroUrl");
+	}
+	
+	public static String getKaoqinUrl() {
+		return pps.getProperty("kaoqin_url");
+	}
 
 	public static String getCascookiedomain() {
 		return pps.getProperty("cascookiedomain");

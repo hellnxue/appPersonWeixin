@@ -155,9 +155,9 @@ public class WeChatPersonController extends WeixinControllerSupport{
          }
         //只显示欢迎词
          TextMsg tm=new  TextMsg();
-         tm.add("员工帮手，您最贴心的伙伴！").addln().addln();
-         tm.add("/呲牙新朋友，使用查询工资/社保等功能 请先 点击“登陆”—“激活账号”").addln().addln();
-        // tm.add("/玫瑰中秋福利/玫瑰享超低价豪礼，品花好月圆季！").addln();
+         tm.add("亲，终于等到您！欢迎关注员工帮手！").addln();
+         tm.add( "如果您是首次使用员工帮手服务号，请先登录并激活账号，即刻享受社保公积金信息查询等服务。"
+          		+ "如无法激活，请联系您的人事经理或专属客服。员工帮手是您更专业、更贴心的个人信息管家！").addln();
          return tm;
     }
 

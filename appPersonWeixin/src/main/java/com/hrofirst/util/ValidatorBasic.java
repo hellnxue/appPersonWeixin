@@ -353,7 +353,7 @@ public class ValidatorBasic {
         Pattern p=null;//正则表达式  
         Matcher m=null;//操作符表达式  
         boolean b=false;  
-        p=Pattern.compile("^(13|15|18|17|)[0-9]{9}$");  
+        p=Pattern.compile("^(13|14|15|18|17|)[0-9]{9}$");  
         m=p.matcher(value);  
         b=m.matches();  
         return b;  

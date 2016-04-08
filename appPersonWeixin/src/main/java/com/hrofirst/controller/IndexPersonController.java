@@ -80,10 +80,13 @@ public class IndexPersonController extends baseController{
     	request.getSession().setAttribute("appType", "weixinPerson");
     	request.getSession().setAttribute("appName", "员工帮手");
     	
-    	if (processOpenID(request, response, code))
+    	if (processOpenID(request, response, code)){
     		return new ModelAndView("redirect:/webApp/index");
-    	else
+    	}else{
     		return new ModelAndView("redirect:/webApp/logout");
+    	}
+    		
+    		
     }
     
     //我的消息

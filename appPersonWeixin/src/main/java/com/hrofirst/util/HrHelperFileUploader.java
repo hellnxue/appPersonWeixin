@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HrHelperFileUploader {
 	// public static final String serverUrl = "http://neice.ezhiyang.com";
-	public static final String serverUrl = "http://hro.ezhiyang.com";
+	public static final String serverUrl =Config.getHroUrl();// "http://neice.ezhiyang.com"
 
 	public static final String fileUploaderUrl = "/dorado/uploader/fileupload";
 

@@ -1,0 +1,14 @@
+@charset "utf-8";
+
+$lte7: false;
+$filter: false;
+$prefixMoz: false;
+$prefixMs: false;
+
+@import "E:/work/git/zSass/base";
+@import "common/px2rem";
+@import "common/vars";
+@import "common/common";
+@import "index";
+@import "paf";
+@import "details";

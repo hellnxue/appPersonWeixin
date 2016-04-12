@@ -208,7 +208,7 @@ public abstract class WeixinSupport
         }
       }
     }
-    
+    //注释掉此处并且在服务器重写的自动回复return null时，自动回复消息会取消.服务器不回复用户任何消息的时候，重写的回复方法返回null即可。有点啰嗦......但也很好懂。
 //    if (result.equals("")){
 //    	result = "FromUserName:"+fromUserName+",ToUserName:"+toUserName+",MsgType:"+msgType;
 //    	

@@ -1,21 +1,47 @@
 package com.github.sd4324530.fastweixin.api;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.sd4324530.fastweixin.api.config.ApiConfig;
 import com.github.sd4324530.fastweixin.api.enums.ResultType;
 import com.github.sd4324530.fastweixin.api.response.BaseResponse;
 import com.github.sd4324530.fastweixin.util.BeanUtil;
 import com.github.sd4324530.fastweixin.util.JSONUtil;
+import com.hrofirst.controller.JsonController;
+import com.hrofirst.util.Config;
+import com.hrofirst.util.WxMenuUtils;
+import com.hrofirst.util.ssl.HttpClientConnectionManager;
 
 
 public class TemplateAPI extends BaseAPI {
+	// http客户端
+		public static DefaultHttpClient httpclient;
+
+		public static String apiUrl = "https://open.weixin.qq.com/connect/oauth2/authorize";
+
+		static {
+			httpclient = new DefaultHttpClient();
+			httpclient = (DefaultHttpClient) HttpClientConnectionManager
+					.getSSLInstance(httpclient);
+			// 接受任何证书的浏览器客户端
+		}
 	private static final Logger LOG = LoggerFactory
 			.getLogger(TemplateAPI.class);
 
@@ -129,5 +155,29 @@ public class TemplateAPI extends BaseAPI {
 			param.put("color", "#000000");
 		}
 		return param;
+	}
+	
+	/**
+	 * 获取微信公众号中已添加的模板列表
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		  HttpClient client = HttpClientBuilder.create().build();
+		  InputStream stream = null;
+		try {
+			String accessToken = WxMenuUtils.getAccessToken("wxf8fc9a730a1c3dce", "cf1752d9f8176af79f6d9f6281ac2947");
+			 
+			
+			   HttpGet get = new HttpGet("https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token="
+						+ accessToken);
+			   
+			   HttpResponse res = client.execute(get, new BasicHttpContext());
+	           stream = res.getEntity().getContent();
+	           String tt=  JsonController.inputStreamTOString(stream, "UTF-8") ;
+			System.out.println("tt="+tt);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

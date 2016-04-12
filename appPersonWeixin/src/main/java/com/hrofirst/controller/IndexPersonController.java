@@ -31,7 +31,7 @@ public class IndexPersonController extends baseController{
     private boolean processOpenID(HttpServletRequest request, HttpServletResponse response, String code){
         if (code != null) {
         	String openId = oAuthAPI.getToken(code).getOpenid();
-        	//String openId="oCH-TxHGOqLsA-6Bk5TADRDVVof4";
+        	//String openId="orH1UszVNSTZnrR9tAH2zqw9wwtg";//My test number
         	System.out.println("appid="+Config.getPersonappid()+"   secret="+Config.getPersonappsecret());
             if (openId != null) {
             	String apptype=String.valueOf(request.getSession().getAttribute("appType"));

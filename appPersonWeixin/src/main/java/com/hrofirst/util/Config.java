@@ -220,8 +220,27 @@ public class Config {
 	public static String getWechatPersonSubscribe() {
 		return pps.getProperty("wechat_personsubscribe");
 	}
+	
+	public static String getMhost() {
+		return pps.getProperty("mhost");
+	}
+	public static String getMport() {
+		return pps.getProperty("mport");
+	}
+	public static String getMaccountId() {
+		return pps.getProperty("maccountId");
+	}
+	public static String getMpassword() {
+		return pps.getProperty("mpassword");
+	}
+	public static String getMserviceId() {
+		return pps.getProperty("mserviceId");
+	}
+	public static String getBMapAK() {
+		return pps.getProperty("BMap_ak");
+	}
 
 	public static void main(String[] args) {
-		System.out.println(Config.getAk());
+		System.out.println(Config.getMport());
 	}
 }

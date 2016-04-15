@@ -398,10 +398,13 @@ public class IndexCommonController extends baseController{
     	
     	if (mobile == null || checkCode == null || inputCode == null ){
     		
-    	}else if(!checkCode.equals(inputCode)){
+    	}
+    	//暂时关掉短信验证
+    	else if(!checkCode.equals(inputCode)){
     		model.addAttribute("codeTip", false);
     		
-    	}else{
+    	}
+    	else{
     		request.getSession().setAttribute("inputMobile", mobile);
     		return new ModelAndView("redirect:/webApp/anon/accountActivate2");
     	}
@@ -836,7 +839,7 @@ public class IndexCommonController extends baseController{
     	//}
     	
         model.addAttribute("cardId", cardId);
-
+        model.addAttribute("ak", Config.getBMapAK());
         return new ModelAndView("webApp/empCheck");
     }	
     
@@ -1373,6 +1376,7 @@ public class IndexCommonController extends baseController{
 		}
     	
 		model.addAttribute("result", jsonStr);
+		model.addAttribute("sbType", type);
     	return "webApp/sbGjjTools/detail"; 
     }
   

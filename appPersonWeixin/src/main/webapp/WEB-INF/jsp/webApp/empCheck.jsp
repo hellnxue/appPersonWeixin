@@ -52,8 +52,8 @@
 </div>
 
 <es:webAppNewFooter/>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>  
-<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${ak }"></script> 
+<!-- <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>  -->
     
 <!--在这里编写你的代码-->
 
@@ -72,12 +72,62 @@ function supportsGeoLocation() {
 }
 // 单次位置请求执行的函数             
 function getLocation() {
-	navigator.geolocation.getCurrentPosition(mapIt, locationError);
+	/* navigator.geolocation.getCurrentPosition(mapIt, locationError); */
+	
+	var geolocation=new BMap.Geolocation();
+	var map=new BMap.Map("allmap");
+	geolocation.getCurrentPosition(function(r){
+		  
+		  if(this.getStatus()==BMAP_STATUS_SUCCESS){
+			lonstr = r.point.lng;
+			latstr = r.point.lat;
+			var mk=new BMap.Marker(r.point);
+			map.addOverlay(mk);
+		    map.panTo(r.point);
+		    var point = new BMap.Point(r.point.lng,r.point.lat);
+			map.centerAndZoom(point, 19);
+			var marker = new BMap.Marker(point);//创建标注
+			map.addOverlay(marker); // 将标注添加到地图中
+			map.setCenter(point);
+			var gc = new BMap.Geocoder();
+			
+			var sContent="";
+			//根据坐标获取文字地理位置信息
+			gc.getLocation(point,function(rs) {
+				
+				var addComp = rs.addressComponents;
+				if (addComp.province !== addComp.city) {
+					 sContent = "<div><h4>你当前的位置是：</h4>" + "<p style='margin:0;line-height:1.5;font-size:12px;text-indent:2em'>" + addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + "</p>" + "</div>";
+				    //address= addComp.province   + addComp.city   + addComp.district  + addComp.street;
+				} else {
+					 sContent = "<div><h4>你当前的位置是：</h4>" + "<p style='margin:0;line-height:1.5;font-size:12px;text-indent:2em'>" + addComp.city + ", " + addComp.district + ", " + addComp.street + "</p>" + "</div>";
+					//address=  addComp.city   + addComp.district  + addComp.street;
+				}
+				var infoWindow = new BMap.InfoWindow(sContent);//创建信息窗口
+				map.openInfoWindow(infoWindow, point);//开启信息窗口
+				
+				 //点击标注打开信息window
+				 marker.addEventListener("click",function(e){
+					 map.openInfoWindow(infoWindow,point); //开启信息窗口
+				  }); 
+			});
+		  }else{
+			  
+			  alert("falid="+this.getStatus());
+		  }
+		  
+	},{enableHighAccuracy:true});
 }
+
+
+
+
 //定位成功时，执行的函数
 function mapIt(position) {
-	var lon = position.coords.longitude;
-	var lat = position.coords.latitude;
+   var lon = position.coords.longitude;
+	var lat = position.coords.latitude;  
+	/* var lon = position.point.lng;
+	var lat = position.point.lat; */
     // alert("您位置的经度是："+lon+" 纬度是："+lat);
 	$("#lonint").val(lon);
 	$("#latint").val(lat);

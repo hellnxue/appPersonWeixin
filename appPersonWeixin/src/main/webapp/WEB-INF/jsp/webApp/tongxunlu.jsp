@@ -195,7 +195,7 @@
  // var nameArray=null;
   
 $(function() {
-
+	  $("ul li[data-rmk='txl']").addClass("cur");
 	  //点击取消
 	   $(".page-back").click(function(){
 			$(".page-back").hide();
@@ -299,7 +299,7 @@ function updateClass(index,name,dept,position,mobile,phone,email){
 	function handlezimu1(which1) {
 		
 		var inputVal = which1;
-		console.log("inputValinputValinputValinputValinputValinputValinputVal==="+inputVal);
+		//console.log("inputValinputValinputValinputValinputValinputValinputVal==="+inputVal);
 		//根据输入的单个个字母查找与之匹配的首字母的数据
 		//cases: 
 		//for (var j = 0; j < zimuArray.length; j++) {

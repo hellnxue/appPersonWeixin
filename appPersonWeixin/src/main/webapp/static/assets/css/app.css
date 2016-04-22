@@ -44,15 +44,15 @@ header .select_ico em{display:inline-block;width:14px;height:20px;background:url
 .am-navbar .am-navbar-nav {overflow:inherit;}
 .fot_bg li a{color:#888888;}
 .fot_bg li a:active{color:#619ad0;}
-.fot_bg li.footer01 .am-footer-ico{width:25px;height:24px;background:url(../images/footer_1.png) no-repeat;background-size:100%;display:inline-block;}
-.fot_bg li.footer02 .am-footer-ico{width:23px;height:24px;background:url(../images/footer_2.png) no-repeat;background-size:100%;display:inline-block;}
-.fot_bg li.footer03 .am-footer-ico{width:24px;height:24px;background:url(../images/footer_3.png) no-repeat;background-size:100%;display:inline-block;}
-.fot_bg li.footer04 .am-footer-ico{width:22px;height:24px;background:url(../images/footer_4.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer01 .am-footer-ico{width:25px;height:24px;background:url(../images/verson1/Home_de.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer02 .am-footer-ico{width:23px;height:24px;background:url(../images/verson1/ADBook_de.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer03 .am-footer-ico{width:24px;height:24px;background:url(../images/verson1/MSG_de.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer04 .am-footer-ico{width:22px;height:24px;background:url(../images/verson1/User_de.png) no-repeat;background-size:100%;display:inline-block;}
 .fot_bg li.cur a{color:#619ad0;}
-.fot_bg li.footer01.cur .am-footer-ico,.fot_bg li.footer01:active .am-footer-ico{width:25px;height:24px;background:url(../images/footer_1cur.png) no-repeat;background-size:100%;display:inline-block;}
-.fot_bg li.footer02.cur .am-footer-ico,.fot_bg li.footer02:active .am-footer-ico{width:23px;height:24px;background:url(../images/footer_2cur.png) no-repeat;background-size:100%;display:inline-block;}
-.fot_bg li.footer03.cur .am-footer-ico,.fot_bg li.footer03:active .am-footer-ico{width:24px;height:24px;background:url(../images/footer_3cur.png) no-repeat;background-size:100%;display:inline-block;}
-.fot_bg li.footer04.cur .am-footer-ico,.fot_bg li.footer04:active .am-footer-ico{width:22px;height:24px;background:url(../images/footer_4cur.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer01.cur .am-footer-ico,.fot_bg li.footer01:active .am-footer-ico{width:25px;height:24px;background:url(../images/verson1/Home_hl.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer02.cur .am-footer-ico,.fot_bg li.footer02:active .am-footer-ico{width:23px;height:24px;background:url(../images/verson1/ADBook_hl.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer03.cur .am-footer-ico,.fot_bg li.footer03:active .am-footer-ico{width:24px;height:24px;background:url(../images/verson1/MSG_HL.png) no-repeat;background-size:100%;display:inline-block;}
+.fot_bg li.footer04.cur .am-footer-ico,.fot_bg li.footer04:active .am-footer-ico{width:22px;height:24px;background:url(../images/verson1/User_hl.png) no-repeat;background-size:100%;display:inline-block;}
 
 .fot_bg li.footeradd .index-home-ico{width:55px;height:55px;background:url(../images/footerico02.png) no-repeat;background-size:100%;display:inline-block;margin-top:-12px;}
 .fot_bg li.footeradd .index-home-ico em{width:13px;height:35px;background:url(../images/footerico03.png) no-repeat;background-size:100%;display:inline-block;margin-top:10px;}
@@ -415,3 +415,9 @@ a.am-modal-btn{color:#fff;border-radius:6px !important;border:none;height:30px;l
 .address_list ul{margin-top:44px;}
 .address_list li.cur a,.address_list li:hover a{background:url(../images/cur.png) no-repeat 90% center;}
 .address-view span{font-weight:normal;}
+
+.mobile_nodisable{background-color:#56baec;}
+
+div.mobile_security_new{position:fixed; bottom:0px;  text-align:center;background-color:#56baec;height:55px;}
+
+input.mobile_security_button{background-color:inherit; border:none;margin-top:10px}

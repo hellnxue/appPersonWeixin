@@ -11563,7 +11563,8 @@ tbody.am-collapse.am-in {
   * Header Theme: default
   */
 .am-header-default {
-  background-color: #0e90d2;
+  /* background-color: #0e90d2; */
+  background-color: #56baec;
 }
 .am-header-default .am-header-title {
   color: #ffffff;

@@ -30,7 +30,7 @@ public abstract class WeixinControllerSupport extends WeixinSupport {
 	protected final String process(HttpServletRequest request)
 			throws ServletException, IOException {
 		if (!isLegal(request)) {
-			LOG.debug("请输入正确的指令");
+			LOG.info("请输入正确的指令");
 			return "请输入正确的指令";
 		}
 		return processRequest(request);

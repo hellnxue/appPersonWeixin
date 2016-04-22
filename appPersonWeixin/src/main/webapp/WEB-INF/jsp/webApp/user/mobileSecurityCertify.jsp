@@ -4,17 +4,19 @@
 <es:webAppNewHeader title="${appName}" description="智阳网络技术" keywords="智阳网络技术"/>
 <header class="am-header am-header-default am-no-layout" data-am-widget="header">
   <div class="am-titlebar-left"> <a class="bak_ico" title="返回" href="javascript:history.go(-1)"><em></em></a> </div>
-  <h1 class="am-header-title">安全认证</h1>
+  <h1 class="am-header-title">更换手机号</h1>
   <div class="am-titlebar-right"> <a title="" class="home_ico" href="${ctx}/webApp/index"><em></em></a> </div>
 </header>
+<div class="am-panel am-panel-default">
+     <div class="am-panel-bd ram-panel-bd">
+      <div class="img am-text-center "><span style="color:#8F8E94">已绑定手机:${handleMobile}</span></div>
+     </div>
+</div>
+<form id="form1" name="form1" enctype="multipart/form-data" class="form-horizontal">
 <div class="vip-center_form">
-	<div class="yz_step">
-    	<span class="cur">验证身份信息</span><span>修改手机号码</span>
-        <p class="line am-cf"><em class="cur am-fl"></em><em class="am-fr"></em></p>
-    </div>
-  <h3>已绑定手机：${handleMobile}</h3>
+ 
   <div class="input_list" id="widget-list">
-  <form id="form1" name="form1" enctype="multipart/form-data" class="form-horizontal">
+ 
     <ul class="am-list m-widget-list" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
       <li>
         <div class="am-g lines"><span class="am-u-sm-8">
@@ -22,63 +24,54 @@
           </span>
            <span class="am-u-sm-4">
           <input type="button" class="am-btn am-btn-warning am-radius am-btn-sm" value="获取验证码" id="sendcaptcha">
-          <span class="Time" style="display:none"><em class="time_sub" id="time_sub"></em>秒后重新发送</span>
           </span>
           </div>
       </li>
     </ul>
-    <p align="center" style="padding:0 2rem;">
-      <input type="submit" class="am-btn am-btn-primary am-radius am-btn-block am-btn-lg" value="下一步" id="submit">
-    </p>
-  </form>     
+   
   </div>
 </div>
-<es:webAppNewFooter/>
+
+ <div class="am-container am-topbar-fixed-bottom am-block am-padding-left-0 am-padding-right-0"  >
+        <input type="submit" class="am-btn am-btn-secondary am-btn-block am-btn-lg am-padding-vertical " value="下一步" id="submit"  > 
+ </div>
+ </form> 
+ 
+	 <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+	  <div class="am-modal-dialog">
+	    <div class="am-modal-hd"></div>
+	    <div class="am-modal-footer">
+	      <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+	    </div>
+	  </div>
+	</div>   
+<script src="${ctx}/static/assets/js/jquery.min.js"></script> 
+<script src="${ctx}/static/assets/js/int.web.js"></script> 
+<script src="${ctx}/static/assets/js/amazeui.js"></script> 
+<script src="${ctx}/static/assets/js/int.pageajax.js"></script>
+<script src="${ctx}/static/assets/js/jquery.transit.js"></script> 
+<script src="${ctx}/static/assets/js/int.com.js" type="text/javascript"></script>
+<script src="${ctx}/static/assets/js/int.datecur.js" type="text/javascript"></script>
+<script type="text/javascript"  src="${ctx}/static/assets/js/jquery.dialog.js"></script>
+<script type="text/javascript"  src="${ctx}/static/assets/js/jquery.bgiframe.min.js"></script>
+<script type="text/javascript"  src="${ctx}/static/assets/js/utils.js"></script>
 <!--在这里编写你的代码-->
 <script type="text/javascript">
 
-function errorCodeTip(msg){
-	 $("#sendcaptcha").closest("li").next("span").html("").remove();
-	 $("#sendcaptcha").closest("li").after("<span style='color:red'>"+msg+"！"+"</span>");
-}
+var path="${ctx}";
 $(function() {
 	var codeCheck="${codeTip}";
-	//console.log("codeCheck=="+"${codeCheck}");
 	if(codeCheck=="false"){
 		errorCodeTip("验证码输入错误");
-	}
+	} 
 
-	var timerc1=0; //全局时间变量（秒数）
-	var times;
-	function add1(){ //加时函数
-		if(timerc1 > 0){ //如果不到1秒
-		    --timerc1; //时间变量自减1
-		    $("#sendcaptcha").hide().siblings('.Time').show();
-		    $(".Time #time_sub").html(parseInt(timerc1)); //写入分秒数
-		   // $("#time_sub").html(Number(parseInt(timerc%60/10)).toString()+(timerc%10)); //写入秒数（两位）
-		};
-		if (timerc1==0) {
-			  $("#sendcaptcha").show().siblings('span.Time').hide();
-		       clearInterval(times);
-		 }
-	};
 		
 	/**
 	 * 获取验证码（个人）
 	 * 
 	 */
 	 $("#sendcaptcha").on("click",function(){
-		
-  	      $.getJSON("${ctx}/hrhelper-platform/anon/sendCertifyMessage.e", {
-  			
-		}, function (data) {
-			if (data == true){
-				 timerc1=60;//时间初始化
-				 times=setInterval(add1,1000);			
-			}else{
-				alert(data.code);	     
-			}
-		});	  
+		 getCheckCode(path);	  
 	}); 
 	$("#submit").on("click",function(){	
 		var messagecode=$("#messagecode").val();
@@ -95,7 +88,15 @@ $(function() {
 		return true;
 		
 	});
+	
+  	inputDisabled();
+    $("#messagecode").on("keyup",function(){
+	  inputDisabled();
+    });  
+	
 });
+
+ 
 </script>
 </body>
 </html>

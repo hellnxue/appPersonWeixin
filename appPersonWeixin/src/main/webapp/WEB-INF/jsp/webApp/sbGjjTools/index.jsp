@@ -11,7 +11,7 @@
     <script src="${ctx }/static/sbGjjTools/lib/hotcss.min.js"></script>
   
 <body class="index">
-    <header><a href="javascript:history.go(-1);" style="font-size:110px"><b>&#139;</b></a>官方数据查询登录</header>
+    <header><a href="${ctx}/webApp/sbGjjTools/officialData" style="font-size:110px"><b>&#139;</b></a>官方数据查询登录</header>
     <form action="" method="post"  >
         <dl>
             <dt>查询条件（必选）</dt>
@@ -46,19 +46,20 @@
                    
                 </select>
             </dd>
-           <!--  <dd data-type="name">
+          <!--   <dd data-type="name">
                 <label for="name">用户名</label>
-                <input type="text" name="name" id="name" maxlength="10">
-            </dd> -->
+                <input type="text" name="name" id="name" maxlength="10" required>
+            </dd>   -->
             <dd data-type="idcard">
                 <label for="idcard">身份证号</label>
-                <input type="text" name="idcard" id="idcard" maxlength="18">
+                <input type="text" name="idcard" id="idcard" maxlength="18" required>
             </dd> 
             <dd>
                 <label for="pwd">密码</label>
-                <input type="password" name="pwd" id="pwd">
+                <input type="password" name="pwd" id="pwd" required><br>
             </dd>
         </dl>
+        <span style="color:red;margin-left:1.03rem;margin-top:0.46rem;display:block;" id="errorTip"> </span>
         <p id="tip">友情提醒：用户首次申请密码时，请携带本人有效身份证件前往就近的街镇社区事务受理服务中心或各区县社保分中心自助查询机进行设置和申请。</p>
         <input type="submit" value="查 询">
     </form>
@@ -74,41 +75,58 @@
 		//event.preventDefault();
 	});
 }); */
+var tip="${codeTip}";
+if(tip){
+	$("#errorTip").html("系统提示："+tip);
+}
 
 var objArray=[
               { city:{name:"上海",value:"shagnhai"},
                 typeAry:[
-            	          {name:"上海社保",value:"5"}
-            	         /*  {name:"上海公积金",value:"2"} */
+            	          {name:"上海社保",value:"5",tip:"友情提醒：用户首次申请密码时，请携带本人有效身份证件前往就近的街镇社区事务受理服务中心或各区县社保分中心自助查询机进行设置和申请。"},
+            	         /*  {name:"上海公积金",value:"2",tip:"友情提醒：用户首次登录时，请前往上海住房公积金网站注册账号，凭注册的账号密码信息即可通过“员工帮手”便捷查询上海个人社保公积金。"}  */   
             		    ]
                },
               { city:{name:"北京",value:"beijing"},
                 typeAry:[
-                          {name:"北京社保",value:"6"}
+                          {name:"北京社保",value:"6",tip:"友情提醒：若您是首次登录，请先注册北京市社会保险网上申报查询系统，完成登录密码设置。"}
+                          
             		    ]
               }];
- 
+var sb_form_action="${ctx}/webApp/sbGjjTools/detail";		//社保查询地址
+var gjj_form_action="${ctx}/webApp/sbGjjTools/detail_paf";  //公积金查询地址
 /*初始化城市下拉列表*/
  function initCityItem(objArray){
 	 var cityOpts="";
 	 var sltFlag="selected";
 	 var sltCity="";
-	
+	 console.log("houtaicity="+"${selectedCityValue}");
 	 objArray.forEach(function(item,index,ary){
+		 //默认选中第一项
 		 if(index!=0){
 		   sltFlag="";
 			 
 		 }else{
 			 sltCity=item.city.name;
-			 
 		 }
+		 //根据传入后台选中的城市value，获取该选中的项的info
+		 if("${selectedCityValue}"==item.city.value){
+			 sltCity=item.city.name;
+			 
+		  }   
 		 cityOpts+='<option value="'+item.city.value+'" '+sltFlag+' >'+item.city.name+'</option>';
 		 
 	 });
 	 
 	$("#city").html(cityOpts);
+	console.log("sltcity="+sltCity);
 	initTypeItem(objArray,sltCity);
 	$('h2').eq("0").html(sltCity);
+	//设置选中的项
+	if("${selectedCityValue}"){
+		$("#city option").removeAttr("selected");
+		$("#city option[value='${selectedCityValue}']").attr("selected","selected");
+	}
  }
  
  /*根据选择的city初始化缴纳类型下拉列表*/
@@ -117,16 +135,25 @@ var objArray=[
 	 var sltFlag="selected";
 	 var sltType="";
 	 var lstValue="";
+	 var lstTip="";
 	 objArray.forEach(function(item,index,ary){
 		if(item.city.name==sltCity){
 			var sltTypeAry=item.typeAry;
 			sltTypeAry.forEach(function(item,index,ary){
-				 if(index!=0){
+				   //默认选中第一项
+				   if(index!=0){
 					   sltFlag="";
 					 }else{
 						 sltType=item.name;
 						 lstValue=item.value;
+						 lstTip=item.tip;
 					 }
+				   //根据传入后台选中的类型value，获取该选中的项的info
+				   if("${selectedTypeValue}"==item.value){
+					 sltType=item.name;
+					 lstValue=item.value;
+					 lstTip=item.tip;
+				 	}   
 				typeOpts+='<option value="'+item.value+'" '+sltFlag+'>'+item.name+'</option>';
 				
 			});
@@ -134,8 +161,14 @@ var objArray=[
 		 
 	 });
 	 $('h2').eq("1").html(sltType);
+	 $("#tip").html(lstTip);//友情提示
 	 handlerType(lstValue);
-	$("#types").html(typeOpts);
+	 $("#types").html(typeOpts);
+	 //设置选中的项
+	 if("${selectedTypeValue}"){
+			$("#types option").removeAttr("selected");
+			$("#types option[value='${selectedTypeValue}']").attr("selected","selected");
+		}
  }
  
 /**
@@ -143,21 +176,24 @@ var objArray=[
  */
 function handlerType(typeValue){
 	switch(typeValue){
-	case "2":
-		$("#tip").html("友情提醒：用户首次登录时，请前往上海住房公积金网站注册账号，凭注册的账号密码信息即可通过“员工帮手”便捷查询上海个人社保公积金。");
-		$("form").attr("action","${ctx}/webApp/sbGjjTools/detail_paf");
-		$("[data-type='name']").show();
-		$("[data-type='idcard']").hide();
-		break;
-	case "5":
-	case "6": 
-		$("#tip").html("友情提醒：用户首次申请密码时，请携带本人有效身份证件前往就近的街镇社区事务受理服务中心或各区县社保分中心自助查询机进行设置和申请。");
-		$("form").attr("action","${ctx}/webApp/sbGjjTools/detail");
-		$("[data-type='name']").hide();
-		$("[data-type='idcard']").show();  
-		break;
-	default:
-		$("form").attr("action","");
+		case "2"://上海公积金
+			$("form").attr("action",gjj_form_action);
+			$("[data-type='name']").show();
+			$("[data-type='idcard']").hide();  
+			break;
+		case "5"://上海社保
+			$("form").attr("action",sb_form_action);
+			$("[data-type='name']").hide();
+			$("[data-type='idcard']").show(); 
+			break;
+		case "6"://北京色环保
+			
+			$("form").attr("action",sb_form_action);
+			$("[data-type='name']").hide();
+			$("[data-type='idcard']").show();  
+			break;
+		default:
+			$("form").attr("action","");
 	
 	} 
 	
@@ -200,22 +236,23 @@ function isValidityBrithBy18IdCard(idCard18){
     return true;   
 }
 /**
- * 为下拉框绑定选择事件
+ * 为所有下拉框绑定选择事件
  */
 function select($show, $select,i){
     
     $select.change(function(){
-         $show.html($select.find('option:checked').text());
+    	
+        $show.html($select.find('option:checked').text());
         var tempValue=$select.find("option:checked").val();
         var tempName=$select.find('option:checked').text();
+        //选城市
     	if(i==0){
-    		console.log("选city");
+    		//console.log("选city");
     		initTypeItem(objArray,tempName);
     		
+    	}else{//选类型
     		
-    	}else{
-    		
-    		console.log("选type");
+    		//console.log("选type");
     		handlerType(tempValue);
     	}
     	
@@ -226,7 +263,16 @@ function select($show, $select,i){
 
 
 Zepto(function(){
+	
+	
 	initCityItem(objArray);
+	
+	$("#idcard").blur(function(){
+		
+		if($(this).val().length>0){
+			$("#errorTip").remove();
+		}
+	});
 	
     var $selectShow = $('h2'),
         $select = $('select'),

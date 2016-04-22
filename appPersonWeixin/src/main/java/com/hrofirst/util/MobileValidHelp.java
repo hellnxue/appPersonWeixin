@@ -3,6 +3,10 @@ package com.hrofirst.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hrofirst.controller.JsonController;
 import com.wondertek.esmp.esms.empp.EMPPConnectResp;
 import com.wondertek.esmp.esms.empp.EMPPData;
 import com.wondertek.esmp.esms.empp.EMPPObject;
@@ -18,7 +22,9 @@ import com.wondertek.esmp.esms.empp.EmppApi;
  * 
  */
 public class MobileValidHelp {
-
+	
+	private static final Logger LOG = LoggerFactory
+			.getLogger(MobileValidHelp.class);
 	private static EMPPConnectResp responseConnect = null;
 
 	private static EmppApi emppApi = null;
@@ -31,6 +37,7 @@ public class MobileValidHelp {
 	private static MobileRecvListener listener;
 
 	static {
+		
 		emppApi = new EmppApi();
 		listener = new MobileRecvListener(emppApi);
 		try {
@@ -45,15 +52,18 @@ public class MobileValidHelp {
 			System.out.println(response);
 			if (response == null) {
 				System.out.println("连接超时失败");
+				LOG.info("连接超时失败");
 			}
 			if (!emppApi.isConnected()) {
 				System.out.println("连接失败:响应包状态位=" + response.getStatus());
+				LOG.info("连接失败:响应包状态位=" + response.getStatus());
 			}
 			if (response != null && emppApi.isConnected()) {
 				responseConnect = response;
 			}
 		} catch (Exception e) {
 			System.out.println("发生异常，导致连接失败");
+			LOG.info("发生异常，导致连接失败");
 			e.printStackTrace();
 		}
 	}
@@ -68,6 +78,7 @@ public class MobileValidHelp {
 	 * @return
 	 */
 	public static Boolean sendMsg(String mobile, String content) {
+		LOG.info("执行发送短信方法："+mobile);
 		try {
 			emppApi.sendActiveTestAsync();
 		} catch (Exception e1) {
@@ -80,6 +91,7 @@ public class MobileValidHelp {
 		}
 		if (emppApi.isSubmitable()) {
 			System.out.println("ready to send");
+			LOG.info("发送手机号码："+mobile);
 			// 详细设置短信的各个属性,不支持长短信
 			EMPPSubmitSM msg = (EMPPSubmitSM) EMPPObject
 					.createEMPP(EMPPData.EMPP_SUBMIT);
@@ -96,6 +108,7 @@ public class MobileValidHelp {
 				msg.setShortMessage(msgContent);
 				msg.assignSequenceNumber();
 				emppApi.submitMsgAsync(msg);
+				LOG.info("发送完毕："+mobile);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return false;

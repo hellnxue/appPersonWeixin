@@ -61,7 +61,7 @@ public class TemplateAPI extends BaseAPI {
 	public ResultType setIndustry(String industry_id1, String industry_id2) {
 		BeanUtil.requireNonNull(industry_id1, "industry_id1 is null");
 		BeanUtil.requireNonNull(industry_id2, "industry_id2 is null");
-		LOG.debug("设置所属行业.....");
+		LOG.info("设置所属行业.....");
 		String url = BASE_API_URL
 				+ "cgi-bin/template/api_set_industry?access_token=#";
 		Map<String, String> param = new HashMap<String, String>();
@@ -80,7 +80,7 @@ public class TemplateAPI extends BaseAPI {
 	 */
 	public String getTemplateId(String templateIdShort) {
 		BeanUtil.requireNonNull(templateIdShort, "templateIdShort is null");
-		LOG.debug("获取模板ID.....");
+		LOG.info("获取模板ID.....");
 		String url = BASE_API_URL 
 				+ "cgi-bin/template/api_add_template?access_token=#";
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -114,7 +114,7 @@ public class TemplateAPI extends BaseAPI {
 		BeanUtil.requireNonNull(touser, "touser is null");
 		BeanUtil.requireNonNull(template_id, "template_id is null");
 		BeanUtil.requireNonNull(data, "data is null");
-		LOG.debug("发布模板消息......");
+		LOG.info("发布模板消息......");
 		String url = BASE_API_URL
 				+ "cgi-bin/message/template/send?access_token=#";
 		Map<String, Object> params = new HashMap<String, Object>();

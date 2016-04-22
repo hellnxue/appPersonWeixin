@@ -35,5 +35,53 @@
 <meta name="msapplication-TileColor" content="#0e90d2">
 <link rel="stylesheet" href="${ctx}/static/assets/css/amazeui.min.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/app.css">
+<style type="text/css">
+.ram-header {
+   height: 44px;
+   background-color: #56baec;
+}
+.am-header .ram-header-title {
+    font-size: 17px;
+}
+.am-header .ram-titlebar-right{
+font-size: 15px;
+}
+.ram-panel-bd {
+    height: 135px;
+}
+.widget-icon{
+    margin-right:12px;
+}
+
+.sp_list li a img.widget-icon1 {
+    
+    margin-right: 20px;
+}
+
+.sp_list li a img.widget-icon2 {
+    
+    margin-right: 14px;
+}
+
+.widget-name{
+   font-size:17px;
+}
+
+.ram-list {
+    margin-bottom: 0;
+     
+}
+
+.rsp_list li {
+    
+    height: 44px;
+    margin: 6px;
+}
+
+/* .sp_list li span.am-fr{
+  font-size:14px;
+} */
+</style>
 </head>
-<body style="background:url(${ctx}/static/assets/images/vipbg.jpg) no-repeat;background-size:100%;">
+<%-- <body style="background:url(${ctx}/static/assets/images/vipbg.jpg) no-repeat;background-size:100%;"> --%>
+<body style="background:#efeff4;">

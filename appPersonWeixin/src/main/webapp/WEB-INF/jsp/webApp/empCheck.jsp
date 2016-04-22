@@ -52,7 +52,7 @@
 </div>
 
 <es:webAppNewFooter/>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${ak }"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${ak}"></script> 
 <!-- <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>  -->
     
 <!--在这里编写你的代码-->
@@ -179,6 +179,8 @@ function locationError(error) {
 // 页面加载时执行getLocation函数
 window.onload = getLocation;
 $(document).ready(function(){
+	$("ul li[data-rmk='empCheck']").addClass("cur");
+ 
 	$('.sign_btn_a').click(function() {
 		$(this).addClass('cur').parents(".am-u-sm-4").siblings().find("button").removeClass('cur');
 		typeint = $(this).data('type');

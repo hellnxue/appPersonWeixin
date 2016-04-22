@@ -3,12 +3,18 @@ package com.hrofirst.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.sd4324530.fastweixin.handle.EventHandle;
 import com.github.sd4324530.fastweixin.handle.MessageHandle;
 import com.github.sd4324530.fastweixin.message.BaseMsg;
@@ -28,6 +34,8 @@ import com.github.sd4324530.fastweixin.servlet.WeixinControllerSupport;
 import com.hrofirst.entity.WeChatUser;
 import com.hrofirst.service.WeChatService;
 import com.hrofirst.util.Config;
+import com.hrofirst.util.WxMenuUtils;
+import com.hrofirst.util.ssl.HttpClientConnectionManager;
 
 /**
  * 员工帮手
@@ -39,13 +47,15 @@ import com.hrofirst.util.Config;
 @RestController
 @RequestMapping("/weChatPerson")
 public class WeChatPersonController extends WeixinControllerSupport{
-
+	// http客户端
+	 
     private static final Logger log = LoggerFactory.getLogger(WeChatPersonController.class);
     private static final String TOKEN = Config.getWechatToken();
 
     @Autowired
     private WeChatService weChatService;
 
+    
 
     //设置TOKEN，用于绑定微信服务器
     @Override
@@ -68,6 +78,29 @@ public class WeChatPersonController extends WeixinControllerSupport{
     //重写父类方法，处理对应的微信消息
     @Override
     protected BaseMsg handleTextMsg(TextReqMsg msg) {
+    	log.info("用户openId:"+msg.getFromUserName());
+    	String appid="wx087432b58f4685db";
+    	String appSecret="0d9c1a7b885d89024e77bd080abe469e";
+    	String accessToken="";
+    	try {
+			 accessToken=WxMenuUtils.getAccessToken(appid, appSecret);
+			 log.info("accessToken:"+accessToken);
+			 
+			 HttpGet get = HttpClientConnectionManager
+						.getGetMethod("https://api.weixin.qq.com/cgi-bin/user/info?access_token="
+								+ accessToken + "&openid=" + msg.getFromUserName()+"&lang=zh_CN");
+				HttpResponse response = WxMenuUtils.httpclient.execute(get);
+				String jsonStr = EntityUtils.toString(response.getEntity(), "utf-8");
+				JSONObject object = JSON.parseObject(jsonStr);
+				log.info("用户信息："+object);
+				log.info("用户昵称："+object.getString("nickname"));
+				
+			 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
         return weChatService.checkPersonUserAndResponseMenu(msg);
     }
 

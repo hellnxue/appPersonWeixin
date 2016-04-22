@@ -60,7 +60,7 @@ import com.service.provider.entity.ReturnS;
 public class JsonController {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(JsonController.class);
-	HttpClient client = HttpClientBuilder.create().build();
+	//HttpClient client = HttpClientBuilder.create().build();
 	
 	@Autowired
 	CenterUserService centerUserService;
@@ -146,6 +146,7 @@ public class JsonController {
      */
     @RequestMapping("hrhelper-platform/orgName")
     public String orgName(HttpServletRequest request, @RequestParam String userName) {
+    	HttpClient client = HttpClientBuilder.create().build();
     	String result="{\"errorMessage\":\"该用户不存在！\",\"userName\":\""+userName+"\"}";
     	HttpPost httpost = new HttpPost(Config.getDatacenterUrl()+"tokenget.e?username=weixin&secret=123456&type=weixin1&user_name="+userName);
         try {
@@ -175,6 +176,7 @@ public class JsonController {
      */
     @RequestMapping("hrhelper-platform/orgInfo")
     public String orgInfo(HttpServletRequest request, @RequestParam String mobile) {
+    	HttpClient client = HttpClientBuilder.create().build();
     	String result="{\"errorMessage\":\"未查到相关数据！\",\"mobile\":\""+mobile+"\"}";
     	HttpPost httpost = new HttpPost(Config.getDatacenterUrl()+"tokenget.e?username=weixin&secret=123456&type=weixin3&user_name="+mobile);
         try {
@@ -203,6 +205,7 @@ public class JsonController {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping("hrhelper-platform/contantList")
     public String contantList(HttpServletRequest request) {
+    	HttpClient client = HttpClientBuilder.create().build();
     	String result="{\"errorMessage\":\"查询数据不存在！\"}";
     	CenterSysUser userInfo = (CenterSysUser) request.getSession()
 				.getAttribute("userInfo");
@@ -255,6 +258,7 @@ public class JsonController {
      */
     @RequestMapping("hrhelper-platform/salary")
     public String wsalary(@RequestParam String cardId, @RequestParam String month) {
+    	HttpClient client = HttpClientBuilder.create().build();
     	
     	String url = Config.getSalaryApiUrl()+"?cardId="+cardId+"&month="+month;
         
@@ -284,7 +288,8 @@ public class JsonController {
      */
     @RequestMapping("hrhelper-platform/empCheck")
     public String empCheck(HttpServletRequest request, @RequestParam String aType, @RequestParam String aForget, @RequestParam String idCard) {
-    	LOG.debug("移动签到.....");
+    	HttpClient client = HttpClientBuilder.create().build();
+    	LOG.info("移动签到.....");
     	String params="";
 		String username = (String) request.getSession().getAttribute("ZhiyangUserName");   
 		String longitude = request.getParameter("longitude");
@@ -292,8 +297,8 @@ public class JsonController {
 		String performance = request.getParameter("performance");
 		
     	System.out.println(longitude+"|"+latitude+"|");
-    	LOG.debug("经度："+longitude );
-    	LOG.debug("纬度："+latitude );
+    	LOG.info("经度："+longitude );
+    	LOG.info("纬度："+latitude );
     	
     	CenterSysUser userInfo = (CenterSysUser) request.getSession()
 				.getAttribute("userInfo");
@@ -309,7 +314,7 @@ public class JsonController {
 			params="idCard="+idCard+"&aForget="+aForget+"&aType="+aType+"&author="+username+"&pX="+longitude+"&pY="+latitude+"&orgId="+hroOrgId;
 		}
 		
-    	HttpPost httpost = getPostMethod(Config.getKaoqinUrl()+"/attendance/ajax/create.e?"+params);
+    	HttpPost httpost = getPostMethod( Config.getKaoqinUrl()+ "http://kaoqin.ezhiyang.com/attendance/ajax/create.e?"+params);
     	httpost.addHeader("Accept", "application/json");
         try {
     		HttpResponse response = client.execute(httpost);

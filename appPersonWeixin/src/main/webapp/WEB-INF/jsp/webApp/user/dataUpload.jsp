@@ -103,29 +103,7 @@
     </div>
   </div>
 </div>
-<div class="footer">
-<div id="" class="am-navbar am-cf am-navbar-default am-no-layout" data-am-widget="navbar">
-<ul class="am-navbar-nav am-cf am-avg-sm-5 fot_bg">
-  <li class="footer01 cur"> <a href="${ctx}/webApp/index"> <span class="am-footer-ico"></span> <span class="am-navbar-label">首页</span></a></li>
-  <li class="footer02"> <a href="${ctx}/webApp/empCheck"> <span class="am-footer-ico"></span> <span class="am-navbar-label">移动签到</span></a></li>
-  <li class="footeradd"> <a> <span class="index-home-ico"><em></em></span></a></li>
-  <li class="footer03"> <a href="${ctx}/webApp/msgs"> <span class="am-footer-ico"></span> <span class="am-navbar-label">消息</span></a></li>
-  <li class="footer04"> <a href="${ctx}/webApp/user"> <span class="am-footer-ico"></span> <span class="am-navbar-label">我的</span></a></li>
-</ul>
-</div>
-<div class="foot-home-over">
-<div data-am-widget="slider" class="am-slider am-slider-default layer_list" data-am-slider='{&quot;animation&quot;:&quot;slide&quot;,&quot;slideshow&quot;:false}'>
-  <ul style="margin-left:20px;">
-    <li class="list01">
-      <a href="${ctx}/webApp/tongxunlu"><dl class="icon01"><dt></dt><dd>通讯录</dd></dl></a>
-    </li>
-  </ul>
-</div>
-</div>
-</div>
-<script src="${ctx}/static/assets/js/jquery.min.js"></script> 
-<script src="${ctx}/static/assets/js/amazeui.js"></script> 
- 
+<es:webAppNewFooter/>
 <script src="${ctx}/static/ajaxFileUpload/ajaxfileupload.js" ></script>
 <script>
 var haveData="";
@@ -207,7 +185,7 @@ $(function(){
 			      		$('#my-alert').modal();  
 			      		
 		    	 }else */
-		    	 console.log(data);
+		    	// console.log(data);
 		    	 if(data.error){
 		    		 
 		      		$('#my-alert .am-modal-hd').html(data.error); 
@@ -230,14 +208,8 @@ $(function(){
 	      		$('#my-alert').modal();  
 		 }  */
 		       
-		
-		 
-	
-		
 	});
-	
-	
-})
+});
 
 
 var timerc1=0; //全局时间变量（秒数）

@@ -143,7 +143,7 @@ $(document).ready(function(){
 			var scrollLeftvar = $(".vip_tabbox").scrollLeft()-$(window).width()*0.333;
 			$(".vip_tabbox").animate({ scrollLeft: scrollLeftvar}, 500);
 		},
-	})
+	});
 	
 	$(".am-tabs-vipnav li").width($(window).width()*0.333).parent("ul").width($(window).width()*0.333*$(".am-tabs-vipnav li").length+5);
 });

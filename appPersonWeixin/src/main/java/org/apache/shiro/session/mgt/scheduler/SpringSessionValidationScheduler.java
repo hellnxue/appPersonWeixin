@@ -121,7 +121,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
         enabled = true;
 
         if (log.isDebugEnabled()) {
-            log.debug("Scheduling session validation job using Spring Scheduler with " +
+        	log.info("Scheduling session validation job using Spring Scheduler with " +
                     "session validation interval of [" + sessionValidationInterval + "]ms...");
         }
 
@@ -142,7 +142,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
             this.enabled = true;
 
             if (log.isDebugEnabled()) {
-                log.debug("Session validation job successfully scheduled with Spring Scheduler.");
+            	log.info("Session validation job successfully scheduled with Spring Scheduler.");
             }
 
         } catch (Exception e) {
@@ -154,7 +154,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
 
     public void disableSessionValidation() {
         if (log.isDebugEnabled()) {
-            log.debug("Stopping Spring Scheduler session validation job...");
+        	log.info("Stopping Spring Scheduler session validation job...");
         }
 
         this.enabled = false;

@@ -123,33 +123,47 @@ public class IndexCommonController extends baseController{
         return "webApp/index";
     }
     
+    
     /**
-     * 用户页
+     * 用户中心 
      * @param request
      * @param model
      * @return
      * 
-     *  
-    	String userName=request.getSession().getAttribute("ZhiyangUserName").toString();
-    	
-    	ReturnS rs = centerUserService.getCenterUser(userName,
-				CenterUserService.SYSTEM_ID_HF);
-    	
-    	CenterSysUser userInfo  = (CenterSysUser) rs.getResult();
      */
     @RequestMapping("/webApp/user")
-    public ModelAndView webApp_user(HttpServletRequest request, Model model) {
+    public ModelAndView user_center(HttpServletRequest request, Model model) {
     	if (request.getSession().getAttribute("ZhiyangUserName") != null) {
 			CenterSysUser userInfo = (CenterSysUser) request.getSession()
 					.getAttribute("userInfo");
 			model.addAttribute("userName", userInfo.getOrgPerson().getName());
 			model.addAttribute("userID", userInfo.getLoginUser().getLoginId());
+			
+
+	    	if(userInfo.getOrgPerson().getMobile()!=null&&!userInfo.getOrgPerson().getMobile().equals("")){
+				model.addAttribute("handleMobile",userInfo.getOrgPerson().getMobile().replace(userInfo.getOrgPerson().getMobile().substring(3, 8), "xxxx"));
+			}
+			 
 		}
 		// apptype获取不了？
 		Subject currentUser = SecurityUtils.getSubject();
 		Session session = currentUser.getSession();
 		String apptype = (String) session.getAttribute("appType");
 		System.out.println(apptype);
+		
+		String cardId = "";
+    	if ( request.getSession().getAttribute("IdCard") != null){
+    		cardId = (String) request.getSession().getAttribute("IdCard"); 
+    		if(cardId.length()==18){
+            	cardId= cardId.replace(cardId.substring(6,14), "xxxxxxxx") ;
+            }
+            if(cardId.length()==15){
+            	cardId=cardId.replace(cardId.substring(6,12), "xxxxxx") ;
+           }
+            model.addAttribute("cardId", cardId); 
+    	}
+      
+        
 		return new ModelAndView("webApp/user/user");
     }
     
@@ -472,7 +486,9 @@ public class IndexCommonController extends baseController{
     	model.addAttribute("mobile", mobile);
     	
     	if (checkCode == null || inputCode == null ){
-    		
+    		 if(inputCode!=null&&!inputCode.equals("")){
+    			 model.addAttribute("codeTip", false);
+    		 }
     	}else if(!checkCode.equals(inputCode)){
     		model.addAttribute("codeTip", false);
     		
@@ -500,7 +516,6 @@ public class IndexCommonController extends baseController{
     	
         return new ModelAndView("webApp/user/accountSecurityCertify2");
     }   
-    
     /**
      * 安全认证---修改邮箱  发送手机验证码
      */
@@ -617,7 +632,9 @@ public class IndexCommonController extends baseController{
 		}
     	
     	if (checkCode == null || inputCode == null ){
-
+    		 if(inputCode!=null&&!inputCode.equals("")){
+    			 model.addAttribute("codeTip", false);
+    		 }
     	}else if(!checkCode.equals(inputCode)){
     		model.addAttribute("codeTip", false);
     		
@@ -840,6 +857,7 @@ public class IndexCommonController extends baseController{
     	
         model.addAttribute("cardId", cardId);
         model.addAttribute("ak", Config.getBMapAK());
+        System.out.println("ak="+Config.getBMapAK());
         return new ModelAndView("webApp/empCheck");
     }	
     
@@ -1290,25 +1308,28 @@ public class IndexCommonController extends baseController{
      */
     @RequestMapping("/webApp/sbGjjTools/detail_paf")
     public String sbGjjDetailPaf(HttpServletRequest request, Model model) {
-    	String jsonStr="{\"errorMessage\":\"该用户不存在！\",\"userName\":\"hehe\"}";
-    	//String params="?sKey=f05ebcc0eb47cfdd8d4aee4b584e0b7c&type="+type+"&name="+name+"&pwd="+pwd+"&loginType=&idcard=&name=&vCode=&sid=";
-    	String type=request.getParameter("type");
-    	String name=request.getParameter("name");
-    	String pwd=request.getParameter("pwd");
+    	String toPage="webApp/sbGjjTools/index";
+    	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
+    	String codeTipInfo="";//错误提示
+    	String type=request.getParameter("type");				//缴纳类型
+    	String name=request.getParameter("name");				//账号
+    	String pwd=request.getParameter("pwd");					//密码
+    	String selectedTypeValue=request.getParameter("type");	//选择的缴纳类型
+    	String selectedCityValue=request.getParameter("city");	//选择的城市
     	Map<String, Object> paramMap = new HashMap<String, Object>();
     	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
     	
     	paramMap.put("sKey", "f05ebcc0eb47cfdd8d4aee4b584e0b7c");
-    	if(type!=null&&!type.equals("")){
-    		paramMap.put("type", Integer.parseInt(type));
-    	}
-    	if(name!=null&&!name.equals("")){
-    		paramMap.put("cardNo", name);
-    	}
-		if(pwd!=null&&!pwd.equals("")){
-			paramMap.put("pwd", pwd);
-		}
     	 
+		if((type!=null&&!type.equals(""))&&(name!=null&&!name.equals(""))&&(pwd!=null&&!pwd.equals(""))){
+    		paramMap.put("type", Integer.parseInt(type));
+    		paramMap.put("cardNo", name);
+    		paramMap.put("pwd", pwd);
+    	}else{
+ 
+    		model.addAttribute("codeTip", "账号或密码不能为空！");
+	    	return toPage; 
+		}
     	
 		try {
 			jsonStr = baobeikejiClient.invoke(paramMap);
@@ -1316,20 +1337,59 @@ public class IndexCommonController extends baseController{
 			JSONObject object0 = JSON.parseObject(jsonStr);
 		      
 		    int code= (Integer) object0.get("code");
-		    
+		    //返回码说明
 		    if(code==10008){//验证码错误，重新请求
 		    	JSONObject object1 = JSON.parseObject(object0.get("data").toString());
 		    	paramMap.put("vCode", object1.get("sid"));
 		    	paramMap.put("sid", object1.get("url"));
 		    	jsonStr = baobeikejiClient.invoke(paramMap);
+		    	object0 = JSON.parseObject(jsonStr);
+			    code= (Integer) object0.get("code");
+		    }
+		    
+		    //返回码说明
+		    if(code==1){
+		    	model.addAttribute("result", jsonStr);
+				model.addAttribute("sbType", type);
+				toPage="webApp/sbGjjTools/detail_paf";
+		    }else if(code==10009){
+		    	
+		    	codeTipInfo="网络错误，请重试！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10010){
+		    	
+		    	codeTipInfo="无效卡号！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10011){
+		    	
+		    	codeTipInfo="账号或密码错误，请重新输入！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10012){
+		    	
+		    	codeTipInfo="身份证号或账号有误！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10013){
+		    	
+		    	codeTipInfo="账号有误！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10014){
+		    	
+		    	codeTipInfo="密码错误！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else{
+		    	codeTipInfo="未知错误！";
+		    	toPage="webApp/sbGjjTools/index";
 		    }
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
     	
-    	model.addAttribute("result", jsonStr);
-    	return "webApp/sbGjjTools/detail_paf"; 
+    	model.addAttribute("codeTip", codeTipInfo);
+		model.addAttribute("selectedTypeValue", selectedTypeValue);
+		model.addAttribute("selectedCityValue", selectedCityValue);
+    	
+    	return toPage; 
     }
     
     /**
@@ -1340,10 +1400,14 @@ public class IndexCommonController extends baseController{
      */
     @RequestMapping("/webApp/sbGjjTools/detail")
     public String sbGjjDetail(HttpServletRequest request, Model model) {
+    	String toPage="webApp/sbGjjTools/index";
     	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
+    	String codeTipInfo="";
     	String type=request.getParameter("type");
     	String idcard=request.getParameter("idcard");
     	String pwd=request.getParameter("pwd");
+    	String selectedTypeValue=request.getParameter("type");
+    	String selectedCityValue=request.getParameter("city");
     	Map<String, Object> paramMap = new HashMap<String, Object>();
     	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
     	
@@ -1353,15 +1417,14 @@ public class IndexCommonController extends baseController{
     		paramMap.put("cardNo", idcard);
     		paramMap.put("pwd", pwd);
     	}else{
-    		model.addAttribute("result", "{\"errorMessage\":\"输入错误！\"}");
-        	return "webApp/sbGjjTools/detail"; 
+ 
+    		model.addAttribute("codeTip", "账号或密码不能为空！");
+	    	return toPage; 
 		}
     	 
 		try {
 			jsonStr = baobeikejiClient.invoke(paramMap);
-//			System.out.println(jsonStr);
 			JSONObject object0 = JSON.parseObject(jsonStr);
-		      
 		    int code= (Integer) object0.get("code");
 		    
 		    if(code==10008){//验证码错误，重新请求
@@ -1369,17 +1432,134 @@ public class IndexCommonController extends baseController{
 		    	paramMap.put("vCode", object1.get("sid"));
 		    	paramMap.put("sid", object1.get("url"));
 		    	jsonStr = baobeikejiClient.invoke(paramMap);
+		    	object0 = JSON.parseObject(jsonStr);
+			    code= (Integer) object0.get("code");
+		    }
+		    
+		    //返回码说明
+		    if(code==1){
+		    	model.addAttribute("result", jsonStr);
+				model.addAttribute("sbType", type);
+				toPage="webApp/sbGjjTools/detail";
+		    }else if(code==10009){
+		    	
+		    	codeTipInfo="网络错误，请重试！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10010){
+		    	
+		    	codeTipInfo="无效卡号！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10011){
+		    	
+		    	codeTipInfo="账号或密码错误，请重新输入！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10012){
+		    	
+		    	codeTipInfo="身份证号或账号有误！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10013){
+		    	
+		    	codeTipInfo="账号有误！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else if(code==10014){
+		    	
+		    	codeTipInfo="密码错误！";
+		    	toPage="webApp/sbGjjTools/index";
+		    }else{
+		    	codeTipInfo="未知错误！";
+		    	toPage="webApp/sbGjjTools/index";
 		    }
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	
-		model.addAttribute("result", jsonStr);
-		model.addAttribute("sbType", type);
-    	return "webApp/sbGjjTools/detail"; 
+		
+		model.addAttribute("codeTip", codeTipInfo);
+		model.addAttribute("selectedTypeValue", selectedTypeValue);
+		model.addAttribute("selectedCityValue", selectedCityValue);
+    	return toPage; 
     }
   
+    /**
+     * 上海社保查询--对外宣传页 
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/anon/index_menu")
+    public ModelAndView index_menu(HttpServletRequest request, Model model) {
+    	//String toPage="webApp/sbGjjTools/index";
+    	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
+    	String codeTipInfo="";
+    	String idcard=request.getParameter("idcard");
+    	String pwd=request.getParameter("pwd");
+    	
+    	if((idcard!=null&&!idcard.equals(""))&&pwd!=null&&!pwd.equals("")){
+    		Map<String, Object> paramMap = new HashMap<String, Object>();
+        	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
+        	
+        	paramMap.put("sKey", "f05ebcc0eb47cfdd8d4aee4b584e0b7c");
+        	paramMap.put("type", 5);
+    		paramMap.put("cardNo", idcard);
+    		paramMap.put("pwd", pwd);
+    		
+    		try {
+    			jsonStr = baobeikejiClient.invoke(paramMap);
+    			JSONObject object0 = JSON.parseObject(jsonStr);
+    		    int code= (Integer) object0.get("code");
+    		    
+    		    if(code==10008){//验证码错误，重新请求
+    		    	JSONObject object1 = JSON.parseObject(object0.get("data").toString());
+    		    	paramMap.put("vCode", object1.get("sid"));
+    		    	paramMap.put("sid", object1.get("url"));
+    		    	jsonStr = baobeikejiClient.invoke(paramMap);
+    		    	object0 = JSON.parseObject(jsonStr);
+    			    code= (Integer) object0.get("code");
+    		    }
+    		    
+    		    //返回码说明
+    		    if(code==1){
+    		    	model.addAttribute("result", jsonStr);
+    		    	
+    		    	return new ModelAndView("/webApp/sbGjjTools/detail_menu");
+    		    }else if(code==10009){
+    		    	
+    		    	codeTipInfo="网络错误，请重试！";
+    		    }else if(code==10010){
+    		    	
+    		    	codeTipInfo="无效卡号！";
+    		    }else if(code==10011){
+    		    	
+    		    	codeTipInfo="账号或密码错误，请重新输入！";
+    		    }else if(code==10012){
+    		    	
+    		    	codeTipInfo="身份证号或账号有误！";
+    		    }else if(code==10013){
+    		    	
+    		    	codeTipInfo="账号有误！";
+    		    }else if(code==10014){
+    		    	
+    		    	codeTipInfo="密码错误！";
+    		    }else{
+    		    	codeTipInfo="未知错误！";
+    		    }
+    		    
+    		    model.addAttribute("codeTipInfo",  codeTipInfo );
+    		    return new ModelAndView("/webApp/sbGjjTools/index_menu");
+    			
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	if(idcard!=null||pwd!=null){
+    		model.addAttribute("codeTipInfo",  "账号名或密码不能为空！" );
+    	} 
+    	
+    	
+    	return new ModelAndView("/webApp/sbGjjTools/index_menu");
+    } 
+    
     public static void main(String args[]){
 //    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
 //    	Calendar cal = Calendar.getInstance();

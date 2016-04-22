@@ -17,3 +17,45 @@
 		return handleDate;
 	}
 	
+	var timerc1=0; //全局时间变量（秒数）
+	var times;
+	function add1(){ //加时函数
+		if(timerc1 > 0){ //如果不到1秒
+		    --timerc1; //时间变量自减1
+		   
+		   $("#sendcaptcha").addClass("am-disabled");
+		   $("#sendcaptcha").attr("value",parseInt(timerc1)+"后重获取");
+		};
+		if (timerc1==0) {
+		   $("#sendcaptcha").removeClass("am-disabled");
+		   $("#sendcaptcha").attr("value", "获取验证码");
+	       clearInterval(times);
+		 }
+	};
+	
+	function inputDisabled(){
+		  if($("#messagecode").val().length>0){
+			  $("#submit").removeClass("am-disabled");
+		  }else{
+			  $("#submit").addClass("am-disabled");
+		  }
+	}
+	
+	function errorCodeTip(msg){
+		 $("#sendcaptcha").closest("li").next("span").html("").remove();
+		 $("#sendcaptcha").closest("li").after("<span style='color:red'>"+msg+"！"+"</span>");
+	}
+	
+	function getCheckCode(path){
+		 $.getJSON(path+"/hrhelper-platform/anon/sendCertifyMessage.e", {
+	  			
+			}, function (data) {  
+				if (true == true){
+					 timerc1=60;//时间初始化
+					 times=setInterval(add1,1000);			
+				}else{
+					$("#my-alert").find(".am-modal-hd").html(data.code);
+					$("#my-alert").modal();     
+				}
+			 });
+	}

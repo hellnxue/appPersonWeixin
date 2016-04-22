@@ -60,7 +60,7 @@ public abstract class WeixinSupport
     String toUserName = (String)reqMap.get("ToUserName");
     String msgType = (String)reqMap.get("MsgType");
 
-    LOG.debug("收到消息,消息类型:{}", msgType);
+    LOG.info("收到消息,消息类型:{}", msgType);
 
     BaseMsg msg = null;
 
@@ -70,8 +70,8 @@ public abstract class WeixinSupport
       QrCodeEvent qrCodeEvent = null;
       if (StrUtil.isNotBlank(ticket)) {
         String eventKey = (String)reqMap.get("EventKey");
-        LOG.debug("eventKey:{}", eventKey);
-        LOG.debug("ticket:{}", ticket);
+        LOG.info("eventKey:{}", eventKey);
+        LOG.info("ticket:{}", ticket);
         qrCodeEvent = new QrCodeEvent(eventKey, ticket);
         buildBasicEvent(reqMap, qrCodeEvent);
         if (eventType.equals("SCAN")) {
@@ -101,7 +101,7 @@ public abstract class WeixinSupport
       }
       else if (eventType.toLowerCase().equals("click")) {
         String eventKey = (String)reqMap.get("EventKey");
-        LOG.debug("eventKey:{}", eventKey);
+        LOG.info("eventKey:{}", eventKey);
         MenuEvent event = new MenuEvent(eventKey);
         buildBasicEvent(reqMap, event);
         msg = handleMenuClickEvent(event);
@@ -110,7 +110,7 @@ public abstract class WeixinSupport
       }
       else if (eventType.equals("VIEW")) {
         String eventKey = (String)reqMap.get("EventKey");
-        LOG.debug("eventKey:{}", eventKey);
+        LOG.info("eventKey:{}", eventKey);
         MenuEvent event = new MenuEvent(eventKey);
         buildBasicEvent(reqMap, event);
         msg = handleMenuViewEvent(event);
@@ -132,7 +132,7 @@ public abstract class WeixinSupport
     }
     else if (msgType.equals("text")) {
       String content = (String)reqMap.get("Content");
-      LOG.debug("文本消息内容:{}", content);
+      LOG.info("文本消息内容:{}", content);
       TextReqMsg textReqMsg = new TextReqMsg(content);
       buildBasicReqMsg(reqMap, textReqMsg);
       msg = handleTextMsg(textReqMsg);
@@ -184,7 +184,7 @@ public abstract class WeixinSupport
       String title = (String)reqMap.get("Title");
       String description = (String)reqMap.get("Description");
       String url = (String)reqMap.get("Url");
-      LOG.debug("链接消息地址:{}", url);
+      LOG.info("链接消息地址:{}", url);
       LinkReqMsg linkReqMsg = new LinkReqMsg(title, description, url);
       buildBasicReqMsg(reqMap, linkReqMsg);
       msg = handleLinkMsg(linkReqMsg);
@@ -202,7 +202,7 @@ public abstract class WeixinSupport
         try {
           WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getAppId());
           result = pc.encryptMsg(result, request.getParameter("timestamp"), request.getParameter("nonce"));
-          LOG.debug("加密后密文:{}", result);
+          LOG.info("加密后密文:{}", result);
         } catch (AesException e) {
           LOG.error("加密异常", e);
         }

@@ -46,6 +46,7 @@
 <!--在这里编写你的代码-->
 <script>
 $(function() {
+  $("ul li[data-rmk='msgs']").addClass("cur");
   $('.am-slider-manual').flexslider({
   // options
   });

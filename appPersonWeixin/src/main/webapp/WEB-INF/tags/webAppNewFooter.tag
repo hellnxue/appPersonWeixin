@@ -2,10 +2,10 @@
 
 <div id="" class="am-navbar am-cf am-navbar-default am-no-layout" data-am-widget="navbar">
   <ul class="am-navbar-nav am-cf am-avg-sm-4 fot_bg">
-    <li class="footer01"> <a href="${ctx}/webApp/index"> <span class="am-footer-ico"></span> <span class="am-navbar-label">首页</span> </a> </li>
-    <li class="footer02"> <a href="${ctx}/webApp/empCheck"> <span class="am-footer-ico"></span> <span class="am-navbar-label">移动签到</span> </a> </li>
-    <li class="footer03"> <a href="${ctx}/webApp/msgs"> <span class="am-footer-ico"></span> <span class="am-navbar-label">消息</span> </a> </li>
-    <li class="footer04"> <a href="${ctx}/webApp/user"> <span class="am-footer-ico"></span> <span class="am-navbar-label">我的</span> </a> </li>
+    <li class="footer01" data-rmk="index"> <a href="${ctx}/webApp/index"> <span class="am-footer-ico"></span> <span class="am-navbar-label">首页</span> </a> </li>
+    <li class="footer02" data-rmk="txl"> <a href="${ctx}/webApp/tongxunlu"> <span class="am-footer-ico"></span> <span class="am-navbar-label">通讯录</span> </a> </li>
+    <li class="footer03" data-rmk="msgs"> <a href="${ctx}/webApp/msgs"> <span class="am-footer-ico"></span> <span class="am-navbar-label">我的消息</span> </a> </li>
+    <li class="footer04" data-rmk="user"> <a href="${ctx}/webApp/user"> <span class="am-footer-ico"></span> <span class="am-navbar-label">我的</span> </a> </li>
   </ul>
 </div>
 

@@ -13,4 +13,5 @@
     
     <dubbo:reference id="dubbo.centerUserService" interface="com.service.provider.CenterUserService"
 		timeout="200000" />
+	<dubbo:reference id="dubbo.mobileService" interface="com.service.provider.MobileService" timeout="200000" />
 </beans>

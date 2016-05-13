@@ -10,11 +10,9 @@
 
 <div class="am-panel am-panel-default">
      <div class="am-panel-bd ram-panel-bd">
-      <div class="img am-text-center "><img src="${ctx}/static/assets/images/verson1/head_de.png" class="am-img-thumbnail am-circle am-text-middle" width="70px"></div>
+      <div class="img am-text-center "><img src="${ctx}/static/assets/images/verson1/head_de.png" id="headImg" class="am-img-thumbnail am-circle am-text-middle" width="70px"></div>
       <div class="am-text-center"><p>${userName}</p><p>${cardId}</p></div>
-</div>
-     
-      
+	</div>     
 </div>
 <div data-am-widget="tabs" class="am-tabs am-tabs-d2 vip_cont_tab sp_list rsp_list">
    
@@ -25,6 +23,7 @@
          
           <li><a data-rel="accordion" href="${ctx}/webApp/user/mobileSecurityCertify"><span class="am-fr">${handleMobile }</span><img alt="Accordion" src="${ctx}/static/assets/images/verson1/phone.png" class="widget-icon1"> <span class="widget-name">绑定手机</span></a></li>
           <li><a data-rel="accordion" href="${ctx}/webApp/user/accountSecurityCertify"><span class="am-fr"></span><img alt="Accordion" src="${ctx}/static/assets/images/verson1/pw.png" class="widget-icon2"> <span class="widget-name">修改密码</span></a></li>
+          <li><a data-rel="accordion" href="${ctx}/webApp/anon/user/user_card?idcard=${IdCardMW}&nickname=${nickname}&headimgurl=${headimgurl}"><span class="am-fr"></span><img alt="Accordion" src="${ctx}/static/assets/images/userCard/bc_icon.png" class="widget-icon3"> <span class="widget-name">我的名片</span></a></li>
           
           
           <%--  <li><a data-rel="accordion" href="${ctx}/webApp/user/city"><span class="am-fr"></span><img alt="Accordion" src="${ctx}/static/assets/images/zhzxmenu1.png" class="widget-icon" width="28"> <span class="widget-name">所在城市</span></a></li> --%>
@@ -43,6 +42,13 @@
 
 <%-- <es:webAppNewVIPFooter/> --%>
 <es:webAppNewFooter/>
+<script>
+ $("ul li[data-rmk='user']").addClass("cur");
+ var headImg="${headimgurl}";
+ if(headImg){
+	 $("#headImg").attr("src",headImg);
+ }
+</script>
 </body>
 </html>
 

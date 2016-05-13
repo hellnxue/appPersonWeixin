@@ -279,6 +279,8 @@ $(function() {
   
 	  
   });
+  
+  //按钮禁用状态
   function inputDisabled(){
 	  if($("#performace").val().length>0){
 		  $("#performaceBtn").removeClass("am-disabled");

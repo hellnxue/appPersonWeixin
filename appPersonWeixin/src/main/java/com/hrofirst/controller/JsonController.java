@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.github.sd4324530.fastweixin.api.TemplateAPI;
 import com.hrofirst.common.ZimuSort;
 import com.hrofirst.entity.City;
 import com.hrofirst.entity.Province;
@@ -43,10 +42,11 @@ import com.hrofirst.service.ProvinceService;
 import com.hrofirst.service.SalaryService;
 import com.hrofirst.service.WeChatUploadFileService;
 import com.hrofirst.util.Config;
-import com.hrofirst.util.MobileValidHelp;
+import com.hrofirst.util.SimpleTextEncryption;
 import com.hrofirst.util.ValidatorBasic;
 import com.service.provider.CenterUserService;
 import com.service.provider.MedicalServiceService;
+import com.service.provider.MobileService;
 import com.service.provider.ReceivingAddrServiceInterface;
 import com.service.provider.entity.Area;
 import com.service.provider.entity.CenterSysUser;
@@ -63,7 +63,9 @@ public class JsonController {
 	//HttpClient client = HttpClientBuilder.create().build();
 	
 	@Autowired
-	CenterUserService centerUserService;
+	private CenterUserService centerUserService;
+	
+	
 	
     @Autowired
     private ProvinceService provinceService;
@@ -79,6 +81,9 @@ public class JsonController {
     private MedicalServiceService medicalServiceService; //体检预约接口
     @Autowired
     private ReceivingAddrServiceInterface receivingAddrServiceInterface; //收货地址管理接口
+    
+    @Autowired
+	private MobileService mobileService;
     
     @RequestMapping("province")
     public List<Province> findAllProvince() {
@@ -288,6 +293,7 @@ public class JsonController {
      */
     @RequestMapping("hrhelper-platform/empCheck")
     public String empCheck(HttpServletRequest request, @RequestParam String aType, @RequestParam String aForget, @RequestParam String idCard) {
+    	String result="{\"message\":\"success\"}";
     	HttpClient client = HttpClientBuilder.create().build();
     	LOG.info("移动签到.....");
     	String params="";
@@ -314,19 +320,38 @@ public class JsonController {
 			params="idCard="+idCard+"&aForget="+aForget+"&aType="+aType+"&author="+username+"&pX="+longitude+"&pY="+latitude+"&orgId="+hroOrgId;
 		}
 		
-    	HttpPost httpost = getPostMethod( Config.getKaoqinUrl()+ "http://kaoqin.ezhiyang.com/attendance/ajax/create.e?"+params);
+		//hro移动签到接口
+    	HttpPost httpost = getPostMethod( Config.getKaoqinUrl()+ "/attendance/ajax/create.e?"+params);
     	httpost.addHeader("Accept", "application/json");
         try {
     		HttpResponse response = client.execute(httpost);
-    		String result = EntityUtils.toString(response.getEntity(), "utf-8");
-            return result;
+    		result = EntityUtils.toString(response.getEntity(), "utf-8");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }    
+        }  
         
-        return "{\"message\":\"success\"}";
+        JSONObject object0 = JSON.parseObject(result);
+        System.out.println(object0.getString("err"));
+        int flag=Integer.parseInt(object0.getString("err"));
+        
+         //jabava移动签到接口
+         if(flag==0){
+        	httpost = getPostMethod( Config.getKaoqinJabavaUrl()+ "/attendance/ajax/create.e?"+params);
+        	System.out.println(Config.getKaoqinJabavaUrl()+ "/attendance/ajax/create.e?"+params);
+        	httpost.addHeader("Accept", "application/json");
+            try {
+        		 HttpResponse response = client.execute(httpost);
+        		 //result = EntityUtils.toString(response.getEntity(), "utf-8");  
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } 
+         }
+        
+        return result;
     }  
     
     
@@ -373,11 +398,11 @@ public class JsonController {
 				}
 				
 				String randomCode = sb.toString();
-				String content = "验证码为【" + randomCode
-						+ "】,感谢您使用智阳网络平台邮箱绑定服务，若非本人操作，请忽略此条信息。";
+				String content = "验证码为" + randomCode
+						+ ",感谢您使用智阳网络平台邮箱绑定服务，若非本人操作，请忽略此条信息。";
 				
 				
-				if( MobileValidHelp.sendMsg(mobile, content)){
+				if(mobileService.sendMessage(mobile, content).equals("1")){
 					request.getSession().setAttribute("activeCode", randomCode);
 		        	request.getSession().setAttribute("activeMobile", mobile);
 
@@ -892,6 +917,11 @@ public class JsonController {
     	
     	System.out.println(JSON.toJSONString(map));
     	
+    	
+    	String result="{\"err\":0,\"errMsg\":\"hello\"}";
+    	 JSONObject object0 = JSON.parseObject(result);
+         System.out.println(object0.getString("errMsg"));
+    	
     }
     /**
 	 * 查询收获地址列表
@@ -1023,4 +1053,51 @@ public class JsonController {
     		}
     		return "{\"errorMessage\":\"没有相关数据！\"}";
     	}
+    	
+    	/**
+    	 * 调用Jabava接口获取用户基本信息
+    	 * @param request
+    	 * @param idcardmw 加密后的身份证
+    	 * @return
+    	 */
+    	@RequestMapping("jabava/getUserInfoByCardId")
+    	@ResponseBody
+	    public String getUserInfoByCardId(HttpServletRequest request,String idcard) {// +/z//v38/PT1//31/fz9/fz0
+    	  LOG.info("获取用户基本信息......");
+    	  LOG.info("密文idcard："+idcard);
+		  String cardId = "";
+		  HttpClient client = HttpClientBuilder.create().build();
+		 
+    	  if ( request.getSession().getAttribute("IdCard") != null){//用户自己查看名片
+    		cardId = (String) request.getSession().getAttribute("IdCard");
+            
+    	  }else{//分享出去的时候别人查看名片
+    		 
+    		cardId=SimpleTextEncryption.decrypt(idcard);//获取身份证密文并解密
+    		System.out.println("解密后的idcard:"+cardId);
+    	  }
+		   
+	      HttpGet get = new HttpGet(Config.getJabavaUrl()+"/api/employeeInteface/getEmployeeByCardId?cardId=" + cardId);//3242222222
+	      InputStream stream = null;
+	      try {
+	            HttpResponse res = client.execute(get, new BasicHttpContext());
+	            stream = res.getEntity().getContent();
+	            String result=inputStreamTOString(stream, "UTF-8");
+	            return result;
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            if (stream != null) {
+	                try {
+	                    stream.close();
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+    		
+	        return "{\"errorMessage\":\"没有相关数据！\"}";
+	    }
 }

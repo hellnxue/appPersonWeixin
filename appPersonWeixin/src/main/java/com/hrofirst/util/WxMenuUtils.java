@@ -1,20 +1,27 @@
 package com.hrofirst.util;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hrofirst.controller.IndexPersonController;
 import com.hrofirst.util.ssl.HttpClientConnectionManager;
 
 /**
  * 微信自定义菜单创建
  */
 public class WxMenuUtils {
+	private static final Logger LOG = LoggerFactory
+			.getLogger(WxMenuUtils.class);
 	// http客户端
 	public static DefaultHttpClient httpclient;
 
@@ -38,10 +45,10 @@ public class WxMenuUtils {
 		// hrMenuTest();
 
 		// 企帮手
-		// orgMenu();
+		 orgMenu();
 
 		// 员工帮手
-		 personMenu();
+		// personMenu();
 		 
 		//员工帮手测试
 		 //personMenuCeShi();
@@ -146,7 +153,7 @@ public class WxMenuUtils {
 
 			// hr帮手
 			s = "{\"button\":["
-					+ "{\"type\":\"view\",\"name\":\"安心社保\",\"url\":\"http://apphrofirst.ezhiyang.com/anxinshebao/index\",\"sub_button\":[]},"
+					+ "{\"type\":\"view\",\"name\":\"全心保\",\"url\":\"http://apphrofirst.ezhiyang.com/anxinshebao/index\",\"sub_button\":[]},"
 					+ "{\"name\":\"睿福利\",\"sub_button\":["
 					+ "{\"type\":\"view\",\"name\":\"睿福利介绍\",\"url\":\"http://mp.weixin.qq.com/s?__biz=MzIzMzAxMjQwOA==&mid=400035022&idx=1&sn=cd65328b6d6e769cf4639b816150b681&scene=23&srcid=1019p6YrnjO8k5YPUMQYAhdc#rd\",\"sub_button\":[]},"
 					+ "{\"type\":\"view\",\"name\":\"福利兑换\",\"url\":\"http://shopzy.ezhiyang.com/shop/wxThemeActivity/index.jhtml\",\"sub_button\":[]},"
@@ -290,7 +297,7 @@ public class WxMenuUtils {
 			String s = "";
 
 			// 企业帮手
-			s = "{\"button\":[{\"type\":\"view\",\"name\":\"办公平台\",\"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6de3d7446f40a5c5&redirect_uri=http%3A%2F%2Fapporg.ezhiyang.com%2FwebApp%2FweixinORG&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect\",\"sub_button\":[]},{\"type\":\"view\",\"name\":\"消息中心\",\"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6de3d7446f40a5c5&redirect_uri=http%3A%2F%2Fapporg.ezhiyang.com%2FwebApp%2FweixinORGNews&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect\",\"sub_button\":[]},{\"type\":\"view\",\"name\":\"第一人力\",\"url\":\"http://chuye.cloud7.com.cn/8454396\",\"sub_button\":[]}]}";
+			s = "{\"button\":[{\"type\":\"view\",\"name\":\"办公平台\",\"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6de3d7446f40a5c5&redirect_uri=http%3A%2F%2Fapporg.ezhiyang.com%2FwebApp%2FweixinORG&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect\",\"sub_button\":[]},{\"type\":\"view\",\"name\":\"消息中心\",\"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6de3d7446f40a5c5&redirect_uri=http%3A%2F%2Fapporg.ezhiyang.com%2FwebApp%2FweixinORGNews&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect\",\"sub_button\":[]},{\"type\":\"view\",\"name\":\"第一人力\",\"url\":\"http://m.zuikuapp.com/a/450398_1255129.html\",\"sub_button\":[]}]}";
 			String res = createMenu(s, accessToken);
 			System.out.println("res= " + res);
 		} catch (Exception e) {
@@ -456,4 +463,29 @@ public class WxMenuUtils {
 
 		return object.getString("errmsg");
 	}
+	
+	/**
+	 * 获取微信用户基本信息
+	 * @param request
+	 * @param openid
+	 */
+    public static  JSONObject getWeixinBasicInfo(String openid){
+    	LOG.info("获取用户基本信息......");
+    	String accessToken="";
+    	JSONObject object = null;
+    	try {
+			 accessToken=getAccessToken(Config.getPersonappid(), Config.getPersonappsecret());
+			 LOG.info("accessToken:"+accessToken);
+			 
+			HttpGet get = HttpClientConnectionManager .getGetMethod("https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openid+"&lang=zh_CN");
+			HttpResponse response = WxMenuUtils.httpclient.execute(get);
+			String jsonStr = EntityUtils.toString(response.getEntity(), "utf-8");
+		    object = JSON.parseObject(jsonStr);
+			LOG.info("用户信息："+object);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return object;
+    }
 }

@@ -3,6 +3,7 @@ package com.hrofirst.controller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,6 +46,7 @@ import com.hrofirst.jms.sender.apiDataJMSSender;
 import com.hrofirst.service.ProvinceService;
 import com.hrofirst.util.BaobeikejiClient;
 import com.hrofirst.util.Config;
+import com.hrofirst.util.SimpleTextEncryption;
 import com.hrofirst.util.TripleDES;
 import com.hrofirst.util.ValidatorBasic;
 import com.service.provider.CenterUserService;
@@ -154,6 +156,9 @@ public class IndexCommonController extends baseController{
 		String cardId = "";
     	if ( request.getSession().getAttribute("IdCard") != null){
     		cardId = (String) request.getSession().getAttribute("IdCard"); 
+    		
+    		model.addAttribute("IdCardMW", SimpleTextEncryption.encrypt(cardId));//将加密后的身份证传入用户中心 3242222222 
+    		
     		if(cardId.length()==18){
             	cardId= cardId.replace(cardId.substring(6,14), "xxxxxxxx") ;
             }
@@ -162,9 +167,32 @@ public class IndexCommonController extends baseController{
            }
             model.addAttribute("cardId", cardId); 
     	}
-      
+        
+    	
         
 		return new ModelAndView("webApp/user/user");
+    }
+    
+    /**
+     * 用户二维码页面
+     * @param request
+     * @param model
+     * @return
+     * 
+     */
+    @RequestMapping("/webApp/anon/user/user_card") 
+    public ModelAndView user_card(HttpServletRequest request, Model model) {
+    	String a=request.getQueryString();
+    	String b=request.getParameter("idcard");
+    	String c=request.getParameter("nickname");
+    	try {
+			String d=URLDecoder.decode(c, "utf-8");
+			System.out.println(d);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ModelAndView("webApp/user/user_card");
     }
     
     /**
@@ -1301,18 +1329,97 @@ public class IndexCommonController extends baseController{
     
     
     /**
-     * 公积金详情页面
+     *  社保公积金工具--公积金详情页面
      * @param request
      * @param model
      * @return
      */
     @RequestMapping("/webApp/sbGjjTools/detail_paf")
     public String sbGjjDetailPaf(HttpServletRequest request, Model model) {
-    	String toPage="webApp/sbGjjTools/index";
+    
+    	String indexPage="webApp/sbGjjTools/index";//查询页
+    	String detailPage="webApp/sbGjjTools/detail_paf";//公积金详情页面
+    	return commonGjjDetailInfo(indexPage,detailPage,request,model);
+    }
+    
+   
+    
+    
+    /**
+     * 社保公积金工具--社保详情页面
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/sbGjjTools/detail")
+    public String sbGjjDetail(HttpServletRequest request, Model model) {
+ 
+    	String indexPage="webApp/sbGjjTools/index";
+    	String detailPage="webApp/sbGjjTools/detail";
+    	return commonSbDetailInfo(indexPage,detailPage, request,  model);
+    }
+  
+    /**
+     * 上海社保公积金查询首页--对外宣传页 
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/anon/index_menu")
+    public ModelAndView index_menu(HttpServletRequest request, Model model) {
+    	 
+    	return new ModelAndView("/webApp/sbGjjTools/index_menu");
+    } 
+    
+    /**
+     * 社保公积金工具--公积金详情页面（对外宣传页）
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/anon/sbGjjTools/detail_paf")
+    public String sbGjjDetailPafMenu(HttpServletRequest request, Model model) {
+    
+    	String indexPage="/webApp/sbGjjTools/index_menu";//查询页
+    	String detailPage="/webApp/sbGjjTools/detail_paf";//公积金详情页面
+    	return commonGjjDetailInfo(indexPage,detailPage,request,model);
+    }
+    
+   
+    
+    
+    /**
+     *社保公积金工具-- 社保详情页面（对外宣传页）
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/webApp/anon/sbGjjTools/detail")
+    public String sbGjjDetailMenu(HttpServletRequest request, Model model) {
+ 
+    	String indexPage="/webApp/sbGjjTools/index_menu";//查询页
+    	String detailPage="/webApp/sbGjjTools/detail";//社保详情页面
+    	return commonSbDetailInfo(indexPage,detailPage, request,  model);
+    } 
+    
+    
+    
+    /**
+     * 社保公积金查询工具---公积金查询详情信息公共方法
+     * @param indexPage 查询页
+     * @param detailPage 公积金详情页
+     * @param request
+     * @param model
+     * @return
+     */
+    private String commonGjjDetailInfo(String indexPage,String detailPage,HttpServletRequest request, Model model){
+    	String toPage=indexPage;
     	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
     	String codeTipInfo="";//错误提示
     	String type=request.getParameter("type");				//缴纳类型
-    	String name=request.getParameter("name");				//账号
+    	
+    	String name=request.getParameter("name");				//姓名
+    	String idcard=request.getParameter("idcard");			//身份证
     	String pwd=request.getParameter("pwd");					//密码
     	String selectedTypeValue=request.getParameter("type");	//选择的缴纳类型
     	String selectedCityValue=request.getParameter("city");	//选择的城市
@@ -1320,11 +1427,18 @@ public class IndexCommonController extends baseController{
     	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
     	
     	paramMap.put("sKey", "f05ebcc0eb47cfdd8d4aee4b584e0b7c");
-    	 
+     	paramMap.put("loginType", "2"); 
 		if((type!=null&&!type.equals(""))&&(name!=null&&!name.equals(""))&&(pwd!=null&&!pwd.equals(""))){
-    		paramMap.put("type", Integer.parseInt(type));
-    		paramMap.put("cardNo", name);
-    		paramMap.put("pwd", pwd);
+    		paramMap.put("type", Integer.parseInt(type));//缴纳类型
+    		paramMap.put("cardNo", name); //公积金卡号
+    		paramMap.put("pwd", pwd); 
+    		
+    		//郑州公积金
+    		if((idcard!=null&&!idcard.equals(""))&&type.equals("9")){
+    			paramMap.put("idcard", idcard); 
+    			paramMap.put("name", name);
+    			paramMap.put("cardNo", null);
+    		}
     	}else{
  
     		model.addAttribute("codeTip", "账号或密码不能为空！");
@@ -1351,34 +1465,34 @@ public class IndexCommonController extends baseController{
 		    if(code==1){
 		    	model.addAttribute("result", jsonStr);
 				model.addAttribute("sbType", type);
-				toPage="webApp/sbGjjTools/detail_paf";
+				toPage=detailPage;
 		    }else if(code==10009){
 		    	
 		    	codeTipInfo="网络错误，请重试！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10010){
 		    	
 		    	codeTipInfo="无效卡号！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10011){
 		    	
 		    	codeTipInfo="账号或密码错误，请重新输入！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10012){
 		    	
 		    	codeTipInfo="身份证号或账号有误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10013){
 		    	
 		    	codeTipInfo="账号有误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10014){
 		    	
 		    	codeTipInfo="密码错误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else{
 		    	codeTipInfo="未知错误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }
 			
 		} catch (Exception e) {
@@ -1389,18 +1503,20 @@ public class IndexCommonController extends baseController{
 		model.addAttribute("selectedTypeValue", selectedTypeValue);
 		model.addAttribute("selectedCityValue", selectedCityValue);
     	
-    	return toPage; 
+    	return toPage;
     }
     
+    
     /**
-     * 社保详情页面
+     * 社保公积金查询工具---社保详情信息公共方法
+     * @param indexPage 查询首页
+     * @param detailPage 社保详情页
      * @param request
      * @param model
      * @return
      */
-    @RequestMapping("/webApp/sbGjjTools/detail")
-    public String sbGjjDetail(HttpServletRequest request, Model model) {
-    	String toPage="webApp/sbGjjTools/index";
+    private String commonSbDetailInfo(String indexPage,String detailPage,HttpServletRequest request, Model model){
+    	String toPage=indexPage;
     	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
     	String codeTipInfo="";
     	String type=request.getParameter("type");
@@ -1440,34 +1556,34 @@ public class IndexCommonController extends baseController{
 		    if(code==1){
 		    	model.addAttribute("result", jsonStr);
 				model.addAttribute("sbType", type);
-				toPage="webApp/sbGjjTools/detail";
+				toPage=detailPage;
 		    }else if(code==10009){
 		    	
 		    	codeTipInfo="网络错误，请重试！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10010){
 		    	
 		    	codeTipInfo="无效卡号！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10011){
 		    	
 		    	codeTipInfo="账号或密码错误，请重新输入！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10012){
 		    	
 		    	codeTipInfo="身份证号或账号有误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10013){
 		    	
 		    	codeTipInfo="账号有误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else if(code==10014){
 		    	
 		    	codeTipInfo="密码错误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }else{
 		    	codeTipInfo="未知错误！";
-		    	toPage="webApp/sbGjjTools/index";
+		    	toPage=indexPage;
 		    }
 			
 		} catch (Exception e) {
@@ -1479,87 +1595,6 @@ public class IndexCommonController extends baseController{
 		model.addAttribute("selectedCityValue", selectedCityValue);
     	return toPage; 
     }
-  
-    /**
-     * 上海社保查询--对外宣传页 
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/webApp/anon/index_menu")
-    public ModelAndView index_menu(HttpServletRequest request, Model model) {
-    	//String toPage="webApp/sbGjjTools/index";
-    	String jsonStr="{\"errorMessage\":\"数据错误！\"}"; 
-    	String codeTipInfo="";
-    	String idcard=request.getParameter("idcard");
-    	String pwd=request.getParameter("pwd");
-    	
-    	if((idcard!=null&&!idcard.equals(""))&&pwd!=null&&!pwd.equals("")){
-    		Map<String, Object> paramMap = new HashMap<String, Object>();
-        	BaobeikejiClient baobeikejiClient = new BaobeikejiClient();
-        	
-        	paramMap.put("sKey", "f05ebcc0eb47cfdd8d4aee4b584e0b7c");
-        	paramMap.put("type", 5);
-    		paramMap.put("cardNo", idcard);
-    		paramMap.put("pwd", pwd);
-    		
-    		try {
-    			jsonStr = baobeikejiClient.invoke(paramMap);
-    			JSONObject object0 = JSON.parseObject(jsonStr);
-    		    int code= (Integer) object0.get("code");
-    		    
-    		    if(code==10008){//验证码错误，重新请求
-    		    	JSONObject object1 = JSON.parseObject(object0.get("data").toString());
-    		    	paramMap.put("vCode", object1.get("sid"));
-    		    	paramMap.put("sid", object1.get("url"));
-    		    	jsonStr = baobeikejiClient.invoke(paramMap);
-    		    	object0 = JSON.parseObject(jsonStr);
-    			    code= (Integer) object0.get("code");
-    		    }
-    		    
-    		    //返回码说明
-    		    if(code==1){
-    		    	model.addAttribute("result", jsonStr);
-    		    	
-    		    	return new ModelAndView("/webApp/sbGjjTools/detail_menu");
-    		    }else if(code==10009){
-    		    	
-    		    	codeTipInfo="网络错误，请重试！";
-    		    }else if(code==10010){
-    		    	
-    		    	codeTipInfo="无效卡号！";
-    		    }else if(code==10011){
-    		    	
-    		    	codeTipInfo="账号或密码错误，请重新输入！";
-    		    }else if(code==10012){
-    		    	
-    		    	codeTipInfo="身份证号或账号有误！";
-    		    }else if(code==10013){
-    		    	
-    		    	codeTipInfo="账号有误！";
-    		    }else if(code==10014){
-    		    	
-    		    	codeTipInfo="密码错误！";
-    		    }else{
-    		    	codeTipInfo="未知错误！";
-    		    }
-    		    
-    		    model.addAttribute("codeTipInfo",  codeTipInfo );
-    		    return new ModelAndView("/webApp/sbGjjTools/index_menu");
-    			
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    	}
-    	
-    	if(idcard!=null||pwd!=null){
-    		model.addAttribute("codeTipInfo",  "账号名或密码不能为空！" );
-    	} 
-    	
-    	
-    	return new ModelAndView("/webApp/sbGjjTools/index_menu");
-    } 
-    
     public static void main(String args[]){
 //    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
 //    	Calendar cal = Calendar.getInstance();
@@ -1590,14 +1625,36 @@ public class IndexCommonController extends baseController{
 		}*/
  		
  	  
- 		String jsonStr="{ \"code\": 10008, \"data\" : { \"sid\" :\"22016031710194056ea143cdbfe4\"   , \"url\": \"hello\"  } }";
-    	JSONObject object0 = JSON.parseObject(jsonStr);
- 		System.out.println(object0.get("code"));
- 		
- 		JSONObject object1 = JSON.parseObject(object0.get("data").toString());
- 		
- 		System.out.println(object1.get("sid"));
- 		System.out.println(object1.get("url"));
+// 		String jsonStr="{ \"code\": 10008, \"data\" : { \"sid\" :\"22016031710194056ea143cdbfe4\"   , \"url\": \"hello\"  } }";
+//    	JSONObject object0 = JSON.parseObject(jsonStr);
+// 		System.out.println(object0.get("code"));
+// 		
+// 		JSONObject object1 = JSON.parseObject(object0.get("data").toString());
+// 		
+// 		System.out.println(object1.get("sid"));
+// 		System.out.println(object1.get("url"));
+// 		
+// 		 String mystring = "google.com,baidu.com_weibo.com_haotu.net";
+// 		 String[] myarray = mystring.split("(\\s*,\\s*)|(\\s*_\\s*)");
+// 		
+// 		
+// 		for(String i:myarray){
+// 			
+// 			System.out.println(i +"=");
+// 		}
+    	
+    	String str="idcard=+/z//v38/PT1//31/fz9/fz0&nickname=%E5%A9%89%E5%84%BF&headimgurl=123";
+    	String strary[]=str.split("&");
+    	System.out.println(strary[1]);
+    	
+        String relary[]=strary[1].split("=");
+        String encodeuristr;
+		try {
+			encodeuristr = URLDecoder.decode(relary[1],"utf-8");
+			System.out.println(encodeuristr);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
  		
  		
     }

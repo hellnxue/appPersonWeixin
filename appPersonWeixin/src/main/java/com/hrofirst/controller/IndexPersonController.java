@@ -4,23 +4,34 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.sd4324530.fastweixin.api.OauthAPI;
 import com.github.sd4324530.fastweixin.api.config.ApiConfig;
 import com.hrofirst.entity.WeChatUser;
 import com.hrofirst.util.Config;
+import com.hrofirst.util.WxMenuUtils;
 import com.hrofirst.util.casUtils;
+import com.hrofirst.util.ssl.HttpClientConnectionManager;
 @Controller
 @DependsOn("userRealm")
 public class IndexPersonController extends baseController{
+	private static final Logger LOG = LoggerFactory
+			.getLogger(IndexPersonController.class);
     private final  OauthAPI oAuthAPI = new OauthAPI(new ApiConfig(Config.getPersonappid(), Config.getPersonappsecret(), true));
 
     /**
@@ -29,12 +40,29 @@ public class IndexPersonController extends baseController{
      * @param code
      */
     private boolean processOpenID(HttpServletRequest request, HttpServletResponse response, String code){
+    	
+    	LOG.info("自动登录判断......");
+    	LOG.info("code："+code);
+    	 
         if (code != null) {
         	String openId = oAuthAPI.getToken(code).getOpenid();
         	//String openId="orH1UszVNSTZnrR9tAH2zqw9wwtg";//My test number
-        	System.out.println("appid="+Config.getPersonappid()+"   secret="+Config.getPersonappsecret());
+        	LOG.info("appid："+Config.getPersonappid());
+        	LOG.info("appsecret："+Config.getPersonappsecret());
+        	LOG.info("openId："+oAuthAPI.getToken(code).getOpenid());
+        	
             if (openId != null) {
-            	String apptype=String.valueOf(request.getSession().getAttribute("appType"));
+            	
+            	//获取头像和昵称
+            	JSONObject userObj= WxMenuUtils.getWeixinBasicInfo(openId);
+            	request.getSession().setAttribute("nickname", userObj.getString("nickname"));
+    	    	request.getSession().setAttribute("headimgurl", userObj.getString("headimgurl"));
+    	    	LOG.info("用户昵称："+userObj.getString("nickname"));
+    	    	LOG.info("用户头像："+userObj.getString("headimgurl"));
+    	    	
+    	    	
+    	    	//暂时注掉自动登录
+            	 /*String apptype=String.valueOf(request.getSession().getAttribute("appType"));
                 // 根据Username与appType查询用户信息
             	WeChatUser user = weChatService.findWeChatUser(openId, apptype);
             	if(user!=null){
@@ -61,7 +89,7 @@ public class IndexPersonController extends baseController{
 		       	     	
 		       	     	return true;
                 	}
-            	}
+            	} */
             }
         }    
         
@@ -81,6 +109,7 @@ public class IndexPersonController extends baseController{
     	request.getSession().setAttribute("appName", "员工帮手");
     	
     	if (processOpenID(request, response, code)){
+    		
     		return new ModelAndView("redirect:/webApp/index");
     	}else{
     		return new ModelAndView("redirect:/webApp/logout");
@@ -112,4 +141,5 @@ public class IndexPersonController extends baseController{
     	else
     		return new ModelAndView("redirect:/webApp/logout");
     }
+    
 }

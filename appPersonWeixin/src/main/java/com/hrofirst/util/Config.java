@@ -200,6 +200,14 @@ public class Config {
 	public static String getKaoqinUrl() {
 		return pps.getProperty("kaoqin_url");
 	}
+	
+	public static String getKaoqinJabavaUrl() {
+		return pps.getProperty("kaoqin_jabava_url");
+	}
+	
+	public static String getJabavaUrl() {
+		return pps.getProperty("jabava_url");
+	}
 
 	public static String getCascookiedomain() {
 		return pps.getProperty("cascookiedomain");

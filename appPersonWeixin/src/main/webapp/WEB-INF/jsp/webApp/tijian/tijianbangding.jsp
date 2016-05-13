@@ -14,7 +14,7 @@
       <!-- <span class="am-fr"><em class="am-icon-angle-right"></em></span><label>所在地区:</label><b class="address-view"><span>上海</span>   </b></span> -->
         <div class="lines"><span>
           <input class="am-form-field am-input-lg" type="text" placeholder="选择商户" id="address-view" >
-          <input   type="hidden"   id="address-id" >
+          <input   type="text"   id="address-id" >
           </span></div>
       </li>
       <li>
@@ -60,6 +60,15 @@
 </div>
 </div>
 </div>
+
+	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+	  <div class="am-modal-dialog">
+	    <div class="am-modal-hd"></div>
+	    <div class="am-modal-footer">
+	      <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+	    </div>
+	  </div>
+	</div> 
 <script>
 $(function() {
 
@@ -69,15 +78,18 @@ $(function() {
 			var storeId = $("#address-id").val();
 			console.log(storeId);
 			if(storeId==""){
-				alert("请选择商户！");
+				$("#my-alert").find(".am-modal-hd").html("请选择商户！");
+				$("#my-alert").modal();
 				return;
 			}
 			$.getJSON("${ctx}/hrhelper-platform/tjianActivate", {
 				cardNum : cardNum,
 				cardPwd : cardPwd,
-				storeId : 59
+				storeId : 114
 			}, function(data) {
-				alert(data.message);
+				/* $("#my-alert").find(".am-modal-hd").html(data.message);
+				$("#my-alert").modal(); */
+				console.log(data.message);
 			});
 
 		});

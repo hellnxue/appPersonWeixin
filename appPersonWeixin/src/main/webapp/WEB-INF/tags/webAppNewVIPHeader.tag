@@ -55,14 +55,18 @@ font-size: 15px;
 
 .sp_list li a img.widget-icon1 {
     
-    margin-right: 20px;
+    margin-right: 34px;
 }
 
 .sp_list li a img.widget-icon2 {
     
-    margin-right: 14px;
+    margin-right: 26px;
 }
 
+.sp_list li a img.widget-icon3 {
+    
+    margin-right: 14px;
+}
 .widget-name{
    font-size:17px;
 }

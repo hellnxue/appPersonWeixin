@@ -46,10 +46,10 @@
                    
                 </select>
             </dd>
-          <!--   <dd data-type="name">
+           <dd data-type="name">
                 <label for="name">用户名</label>
                 <input type="text" name="name" id="name" maxlength="10" required>
-            </dd>   -->
+            </dd>    
             <dd data-type="idcard">
                 <label for="idcard">身份证号</label>
                 <input type="text" name="idcard" id="idcard" maxlength="18" required>
@@ -83,8 +83,8 @@ if(tip){
 var objArray=[
               { city:{name:"上海",value:"shagnhai"},
                 typeAry:[
-            	          {name:"上海社保",value:"5",tip:"友情提醒：用户首次申请密码时，请携带本人有效身份证件前往就近的街镇社区事务受理服务中心或各区县社保分中心自助查询机进行设置和申请。"},
-            	         /*  {name:"上海公积金",value:"2",tip:"友情提醒：用户首次登录时，请前往上海住房公积金网站注册账号，凭注册的账号密码信息即可通过“员工帮手”便捷查询上海个人社保公积金。"}  */   
+            	          {name:"上海社保",value:"5",tip:"友情提醒：用户首次申请密码时，请携带本人有效身份证件前往就近的街镇社区事务受理服务中心或各区县社保分中心自助查询机进行设置和申请。"}
+            	         /*  {name:"上海公积金",value:"2",tip:"友情提醒：用户首次登录时，请前往上海住房公积金网站注册账号，凭注册的账号密码信息即可通过“员工帮手”便捷查询上海个人社保公积金。"}    */   
             		    ]
                },
               { city:{name:"北京",value:"beijing"},
@@ -92,7 +92,13 @@ var objArray=[
                           {name:"北京社保",value:"6",tip:"友情提醒：若您是首次登录，请先注册北京市社会保险网上申报查询系统，完成登录密码设置。"}
                           
             		    ]
-              }];
+              },
+              { city:{name:"郑州",value:"zhengzhou"},
+                  typeAry:[
+                            {name:"郑州公积金",value:"9",tip:""}
+                            
+              		    ]
+                }];
 var sb_form_action="${ctx}/webApp/sbGjjTools/detail";		//社保查询地址
 var gjj_form_action="${ctx}/webApp/sbGjjTools/detail_paf";  //公积金查询地址
 /*初始化城市下拉列表*/
@@ -100,7 +106,6 @@ var gjj_form_action="${ctx}/webApp/sbGjjTools/detail_paf";  //公积金查询地
 	 var cityOpts="";
 	 var sltFlag="selected";
 	 var sltCity="";
-	 console.log("houtaicity="+"${selectedCityValue}");
 	 objArray.forEach(function(item,index,ary){
 		 //默认选中第一项
 		 if(index!=0){
@@ -119,10 +124,10 @@ var gjj_form_action="${ctx}/webApp/sbGjjTools/detail_paf";  //公积金查询地
 	 });
 	 
 	$("#city").html(cityOpts);
-	console.log("sltcity="+sltCity);
+	//console.log("sltcity="+sltCity);
 	initTypeItem(objArray,sltCity);
 	$('h2').eq("0").html(sltCity);
-	//设置选中的项
+	//根据后台返回的项重新设置选中的项
 	if("${selectedCityValue}"){
 		$("#city option").removeAttr("selected");
 		$("#city option[value='${selectedCityValue}']").attr("selected","selected");
@@ -164,8 +169,8 @@ var gjj_form_action="${ctx}/webApp/sbGjjTools/detail_paf";  //公积金查询地
 	 $("#tip").html(lstTip);//友情提示
 	 handlerType(lstValue);
 	 $("#types").html(typeOpts);
-	 //设置选中的项
-	 if("${selectedTypeValue}"){
+	//根据后台返回的项重新设置选中的项
+	 if("${selectedTypeValue}"&&$("#types option[value='${selectedTypeValue}']")[0]!=undefined){
 			$("#types option").removeAttr("selected");
 			$("#types option[value='${selectedTypeValue}']").attr("selected","selected");
 		}
@@ -173,24 +178,33 @@ var gjj_form_action="${ctx}/webApp/sbGjjTools/detail_paf";  //公积金查询地
  
 /**
  * 根据缴纳类型做相应处理
+     社保：身份证+密码
+   公积金：姓名+密码
+  郑州公积金：姓名+身份证+密码
  */
 function handlerType(typeValue){
 	switch(typeValue){
 		case "2"://上海公积金
 			$("form").attr("action",gjj_form_action);
-			$("[data-type='name']").show();
-			$("[data-type='idcard']").hide();  
+				$("input[name='name']").attr("type","text").parent("dd").show();
+				$("input[name='idcard']").attr("type","hidden").parent("dd").hide(); 
 			break;
 		case "5"://上海社保
 			$("form").attr("action",sb_form_action);
-			$("[data-type='name']").hide();
-			$("[data-type='idcard']").show(); 
+			$("input[name='name']").attr("type","hidden").parent("dd").hide();
+			$("input[name='idcard']").attr("type","text").parent("dd").show(); 
 			break;
-		case "6"://北京色环保
+		case "6"://北京社保
 			
 			$("form").attr("action",sb_form_action);
-			$("[data-type='name']").hide();
-			$("[data-type='idcard']").show();  
+			$("input[name='name']").attr("type","hidden").parent("dd").hide();
+			$("input[name='idcard']").attr("type","text").parent("dd").show();   
+			break;
+		case "9"://郑州公积金
+			
+			$("form").attr("action",gjj_form_action);
+			$("input[name='name']").attr("type","text").parent("dd").show();
+			$("input[name='idcard']").attr("type","text").parent("dd").show();   
 			break;
 		default:
 			$("form").attr("action","");
@@ -256,6 +270,7 @@ function select($show, $select,i){
     		handlerType(tempValue);
     	}
     	
+    	$("#errorTip").html("");
     	
     });  
 }

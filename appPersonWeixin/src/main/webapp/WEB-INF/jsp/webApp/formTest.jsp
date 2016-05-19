@@ -43,7 +43,7 @@
 	   });
 	   
 	   
-	   //ajax需要用两次转码，后台用DecodeURI的时候才能接到中文
+	   //ajax需要用两次转码，后台用DecodeURI的时候才能接到中文(这个说法不成立)
 	   $(":button:eq(0)").on("click",function(){
 		   console.log(encodeURI( encodeURI( $(":input:eq(0)").val())));
 		   $.ajax({

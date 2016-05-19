@@ -8,7 +8,7 @@
 <meta name="keywords" content="智阳网络技术">
 <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>智阳网络—官方数据直通车</title>
+<title>智阳网络—官方社保数据直通车</title>
 
 <!-- Set render engine for 360 browser -->
 <meta name="renderer" content="webkit">
@@ -124,7 +124,7 @@ font-size: 15px;
         <img src="${ctx}/static/assets/images/verson1/login-logo.png" width="36%">
       </div>
       <div class="am-text-center am-text-white">
-        <h2 class="am-margin-top-xs">官方数据查询</h2>
+        <h2 class="am-margin-top-xs">官方社保数据查询</h2>
       </div>
     </div>
 </div>

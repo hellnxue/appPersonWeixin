@@ -921,6 +921,33 @@ public class JsonController {
     	String result="{\"err\":0,\"errMsg\":\"hello\"}";
     	 JSONObject object0 = JSON.parseObject(result);
          System.out.println(object0.getString("errMsg"));
+         
+         
+         String str="hello world";
+         boolean flag=str instanceof Object;
+         System.out.println("HEHE:"+flag);
+         
+         String st1="hello";
+         String st2="hello";
+         boolean f1=st1==st2;
+         boolean f2=st1.equals(st2);
+         
+         System.out.println(f1+"\n hh="+f2);
+         
+         String s1="hello";
+         String s2=new String("hello");
+         boolean ff1=s1==s2;
+         boolean ff2=s1.equals(s2);
+         
+         System.out.println("==:"+ff1);
+         System.out.println("==:"+ff2);
+//         String a=null;
+//         String b=new String(a);
+         
+         String ss=new String("world");
+         String xx=new String("world");
+         System.out.println(ss==ss);//true
+         System.out.println(ss==xx);//false
     	
     }
     /**

@@ -170,4 +170,20 @@ public class ExternalAPIController {
 		String randomCode = sb.toString();
 		return randomCode;
 	}
+	
+	public static void main(String args[]){
+		String str="612301198208010019";
+		DesUtil desUtil = new DesUtil();
+		try {
+			String jm=desUtil.encrypt(str, "wechatapi");
+			System.out.println(jm);
+			
+			String jiem=desUtil.decrypt(jm, "wechatapi");
+			System.out.println(jiem);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

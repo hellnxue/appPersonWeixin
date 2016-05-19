@@ -1595,6 +1595,68 @@ public class IndexCommonController extends baseController{
 		model.addAttribute("selectedCityValue", selectedCityValue);
     	return toPage; 
     }
+    
+    /**
+     *测试提交方式出现的中文乱码问题
+     */
+    @RequestMapping("/webApp/anon/formTest")
+    public String mytest(HttpServletRequest request, Model model) {
+    	
+    	//request.getParameter("")是获取解码之后的数据
+    	String cl=request.getParameter("china");
+    	String vl=request.getParameter("chinaec");// %25E4%25BD%25A0%25E5%25A5%25BD
+    	System.out.println("china:"+cl);
+    	System.out.println("chinaec:"+vl);
+    	
+//     	String a=request.getQueryString().substring(0);//只针对get有用
+//     	System.out.println("query:"+a);
+    	
+    	
+    	if(vl!=null&&!vl.equals("")){
+    		//String a=request.getQueryString().substring(0);
+    		
+    		try {
+				System.out.println("decodeURI:"+ URLDecoder.decode(vl, "UTF-8") );//前台转码一次，后台解码一次
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	
+    	System.out.println(request.getCharacterEncoding());
+    	try {
+			request.setCharacterEncoding("UTF-8");
+			
+			System.out.println(request.getCharacterEncoding());	
+			if(request.getParameter("china")!=null&&!request.getParameter("china").equals("")){
+				byte[] source=request.getParameter("china").getBytes("ISO8859-1");
+				System.out.println(new String(source,"utf-8"));
+			}
+			
+		} catch (UnsupportedEncodingException e) {
+			 
+			e.printStackTrace();
+		}
+    	
+    	 
+    	return "/webApp/formTest";
+    }
+    
+    @RequestMapping("code/bmcode")
+    @ResponseBody
+    public String code(HttpServletRequest request, @RequestParam String china,@RequestParam String chinaec) {
+    	System.out.println("china:"+china);
+    	System.out.println("chinaec:"+chinaec);
+    	
+    	try {
+			System.out.println("URLDecoder.decode chinaec:"+URLDecoder.decode(chinaec,"utf-8"));//前台转码两次，后台解码一次
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+    	return "hello";
+    }
+    
     public static void main(String args[]){
 //    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
 //    	Calendar cal = Calendar.getInstance();
@@ -1652,6 +1714,14 @@ public class IndexCommonController extends baseController{
 		try {
 			encodeuristr = URLDecoder.decode(relary[1],"utf-8");
 			System.out.println(encodeuristr);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		//%E4%BD%A0%E5%A5%BD
+		try {
+			System.out.println(URLDecoder.decode("%25E4%25BD%25A0%25E5%25A5%25BD", "UTF-8"));
+			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

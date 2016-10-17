@@ -1,0 +1,161 @@
+/* reset */
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend{font:12px/1.14 "Microsoft YaHei",arial,\5b8b\4553;color:#898989;outline:0;}
+body{background: #E9EBD5;}
+a,a:hover{font-family:"Microsoft YaHei"; color:#666;}
+input,button{outline: none;}
+select{border:0; margin:0; padding:0;}
+
+.line-gray{font-size: 0;border-bottom: 0; margin:0; padding:0; font-weight: normal; width: 185px; height: 1px;border-bottom:1px solid #d6d6d6; margin:5px 0 10px 7px;*margin-left:4px; float:left;}
+.change-clo{color:#00A1E9!important;}
+.total-clo{color:#FA261B;}
+.custom-bg-r{background-color: #EC5449!important;}
+.custom-bg-b{background-color: #76ABDD!important;}
+/* icon字体声明 */
+
+
+@font-face {font-family: "iconfont";
+  src: url('../icon/iconfont.eot'); /* IE9*/
+  src: url('../icon/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../icon/iconfont.woff') format('woff'), /* chrome、firefox */
+  url('../icon/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('../icon/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+/* 清除浮动 */
+.clearfix:after{visibility: hidden; display: block; clear: both; height: 0; font-size: 0; content: ".";}
+.clearfix{zoom:1;}
+
+
+.no-right{margin-right: 0!important;}
+.body{ width: 1200px; margin:0 auto;}
+/* header */
+
+.count-head,.count-mid{ margin:0 auto;background-color: red;  width: 1030px; height: 56px;}
+.count-head{ background:  url(../images/logo.png) center no-repeat;-webkit-background-size: 100%;
+background-size: 100%; margin-left: 77px;}
+.count-mid{
+	 box-shadow: 0 0 7px #ccc;width: 1013px;*width: 1020px; *margin-left: 85px; height: 175px; margin-top: 30px;border:0;background-color: #fff;}
+
+.mid-h{ font-size: 24px; color: #666;  width:175px;*width:230px; height: 175px; float: left; background-color: #5e5e5e; line-height: 50px;  margin-left: -9px; box-shadow: 0 0 7px #ccc; }
+.mid-h h2{color: #fff;font-size:14px;letter-spacing: 2px; text-align: center; }
+
+
+.mid-mid {  margin: 20px 60px 0 0; float: right;*margin: 20px 20px 0 0;}
+.mid-mid li{ width:200px;float: left;  height: 25px; line-height: 25px; font-size: 12px; color:#7e7e7e;}
+
+.mid-mid li p span{float: right; padding-right: 75px; text-align:right; *margin-top: -20px;}
+.mid-mid  h3{font-weight: normal; font-size: 14px;color: #2D7FB7;margin-bottom: 15px;}
+
+
+
+/* 管理界面部分 */
+.count-footer{ width: 1032px;  margin:30px auto ; position: relative;}
+.count-footer li{ float: left; margin-right: 7px; position: relative;*display: inline;}
+.count-footer a,.count-footer div{ float: left; width: 199px; height: 610px; /* border:2px solid #999; */ border-radius: 2px; background-color: #D7D8D3; cursor: pointer; margin-bottom: 15px;}
+.count-footer .one,.count-footer .two,.count-footer .three,.count-footer .four,.count-footer .five{background:  url(../images/face.png) 0 0 no-repeat;}
+.count-footer .two{   background-position:  -215px 0; }
+.count-footer .three{ background-position:  -429px 0;   }
+.count-footer .four{  background-position:  -643px 0;  }
+.count-footer .five{  background-position:  -858px 0;  }
+
+
+.count-footer a h3{float: left; width: 175px; margin:250px auto; text-align: center; font-size: 20px; color: #646464; font-weight: 600;}
+
+.count-footer div { position: absolute; top: 0 ;left: 0;background-color: #EFEFEF; z-index: 1;}
+
+.count-footer div h4{ /* width: 179px; */ height: 40px;line-height: 40px; font-size: 15px; color: #646464; text-align: center;background-color: #D7D8D3; margin-bottom: 10px; padding-right: 30px;*padding-right: 30px; border-radius: 2px 2px 0 0;}
+
+.count-footer div h5{width: 175px; margin-left: 20px; font-size: 14px; color: #666;font-weight: 600; margin-bottom: 15px;*margin-top: 10px;}
+.count-footer .contract,.count-footer .mode{ font-family: "Microsoft yahei" ; margin-left: 0;background-color: transparent;font-size: 14px; color: #666;font-weight: 600; margin-bottom: 15px; padding: 0;*float: left;} 
+.count-footer div ol li a{ font-size: 11px; background-color: transparent; width: 79%; padding-left: 20px; border:0; height: 8px;/*  line-height: 20px; */ line-height: 15px; color: #949494;*float: left; *margin-bottom: 8px;}
+.count-footer div ol li a i{/* width: 22px; */ text-align: center; font-size: 9px; background-color: #EB6100; float: right; padding:0 5px; font-style: normal; font-weight: normal; color:#fff;  /* text-overflow:ellipsis;  white-space: nowrap; overflow: hidden;*/ border-radius: 5px; *margin-top: -15px;}
+.customer h4 button{width: 40px; float: left;padding: 5px 10px; font-size: 24px; line-height: 30px; height:40px; font-weight: normal;color: #ccc; font-family: "iconfont";/*  border:1px solid #fff; */ border: 0; border-radius:2px 0 0 0;background:  url(../images/ding-l.png) center no-repeat;}
+
+.bg-change{background:url(../images/ding-r.png) center no-repeat !important;}
+
+
+/* 选择月份 */
+
+.chose{ margin:0px auto; color: #fff; width: 105px; height: 45px; overflow: hidden; background-color: #1C9CF3; text-align: center;}
+.Month{ position: relative;}
+
+.chose{position: relative;}
+.chose .ar-l,.chose .ar-r{ display: block; width: 22px;  height: 45px; position: absolute; top: 0; left: 0; z-index: 9; cursor: pointer;}
+.chose .ar-r{ left: 83px;}
+.chose .ar-l:hover,.chose .ar-r:hover{background-color: #7AC6F8;}
+
+.chose li s{ margin:13px 0 0 5px; width: 8px; height: 19px; float: left; background:  url(../images/arr.png) -1px -2px  no-repeat;}
+
+.chose .arrow-r{background-position: -16px -2px;  }
+
+.baowei{ width: 530px; height: 175px; margin-left: 200px; position: relative;}
+.baowei ol{ width: 3039px; position: relative;}
+.baowei .qie{ width:550px; overflow: hidden; height: 175px; }
+.baowei ol .mid-slide{ float: left; }
+
+.M-bao{width: 105px; }
+.M-qie{ position: relative; width: 105px; height: 40px; overflow: hidden; }
+.M-qie div{ width:325px; position: relative;}
+.M-qie div span{width:108px;  font-size: 14px;float: left;text-align: center; height: 45px; line-height: 45px;}
+.M-qie div span b{ font-size: 14px; font-family: "Microsoft yahei"; font-weight: normal;}
+
+#now_year{
+	color:#FFF;
+	font-size:14px;
+	font-family: "Microsoft yahei"; 
+	font-weight: normal;
+	padding:0px;
+	margin:0px;
+	background: none;
+	line-height: 14px;
+	display: block;
+	text-align: center;
+	margin-bottom:10px; 
+}
+#now_year span{
+	font-weight: normal;
+}
+
+#tool{
+	display: none;
+}
+.customer ol li h5 a{
+	text-align:left;
+	padding-left:0px;
+	font-size: 14px;
+	color: #666;
+	font-weight: 600;
+	margin-bottom: 15px;
+}
+
+.caidang{width:32px; height:74px; position:absolute; margin:25px 0 0 -42px;}
+.caidang li{ background:url(../images/qiehuan.png) no-repeat; height: 74px; text-align: center;  float:right; margin-top:-5px; font-size:14px;}
+.caidang li a{color: #FFF; display:block; padding:12px 3px 0px 2px ; }
+.caidang li.dq{width:40px; height:74px; background-position: -74px 0px; font-weight: bold; font-size:16px;}
+.caidang li.dq1{width:40px; height:74px; background-position: -33px 0px; font-weight: bold; font-size:16px; margin-top:-10px;}
+.caidang li.dq a{padding:7px 2px 7px 6px; width:30px;}
+.caidang li.dq1 a{padding:11px 2px 7px 6px; width:30px;}
+
+.gonggao{ width:215px; float:right; margin-top:-138px; padding:20px 10px 10px 10px;}
+.gonggao h2{ font-size:15px; color:#009ff0; margin-left:60px; margin-bottom:10px;}
+.gonggao ul li{ list-style-image:url(../images/sj.png); font-size:12px; line-height:22px; }
+.gonggao span{ float:right; margin:10px 20px 0 0;}
+.gonggao span a{ color:#009ff0;}
+
+.xian{ width:1px; height:120px; background:url(../images/x.jpg) repeat-y; margin-left:754px; margin-top:-155px;}

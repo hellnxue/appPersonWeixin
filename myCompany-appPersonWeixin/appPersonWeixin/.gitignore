@@ -1,0 +1,6 @@
+/target
+/.settings
+.classpath
+.project
+src/main/webapp/WEB-INF/jsp/error/MyJsp.jsp
+/bin/

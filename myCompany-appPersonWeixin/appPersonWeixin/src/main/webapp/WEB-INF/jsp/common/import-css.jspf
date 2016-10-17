@@ -1,0 +1,11 @@
+
+<link rel="stylesheet" href="${ctx}/static/comp/amazeui/css/amazeui.min.css">
+<link rel="stylesheet" href="${ctx}/static/comp/amazeui/css/app.css?2">
+<link rel="stylesheet" href="${ctx}/static/webApp/css/css.css">
+<link rel="stylesheet" href="${ctx}/static/webApp/css/style.css">
+
+<link rel="stylesheet" href="http://a.static.amazeui.org/assets/2.x/css/amaze.min.css?v=i89liy93">
+<link rel="canonical" href="http://amazeui.org/widgets/list_news/default/4?_ver=2.x"/>
+<script src="http://a.static.amazeui.org/assets/2.x/js/jquery.min.js?v=i89liy93"></script>
+<script src="http://a.static.amazeui.org/assets/2.x/js/handlebars.min.js?v=i89liy93"></script>
+<script src="http://a.static.amazeui.org/assets/2.x/js/amazeui.min.js?v=i89liy93"></script>

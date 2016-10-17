@@ -1,0 +1,88 @@
+/* 初始化 */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+body, button, input, select, textarea { font:12px/1.5tahoma, arial,"微软雅黑", \5b8b\4f53; }
+h1, h2, h3, h4, h5, h6{ font-size:100%; font-family: "微软雅黑"; }
+address, cite, dfn, em, var { font-style:normal; }
+ul, ol { list-style:none; }
+a { text-decoration:none; }
+a:hover { text-decoration:none; }
+legend { color:#000; }
+fieldset, img { border:0; }
+button, input, select, textarea { font-size:100%; }
+table { border-collapse:collapse; border-spacing:0; }
+
+.no-right{border:0 !important;}
+.head{ overflow: hidden; width: 100%; height: 103px; }
+.left{float: left; /* display: none; */ width: 125px; height: 102px; padding-top: 25px; margin-left: 60px;}
+.left a{float: left; top: 25px; width: 121px; height: 77px; text-indent: -2000em; }
+/* .left h1, */
+.left img{float: left; width: 121px; height: 77px;}
+
+.right{position: relative; width: 80%; height: 87px; float: right; border-bottom:4px solid #8B8B8B;}
+.right h2{ margin-top: 55px; font-weight: normal; font-size: 24px; color: #626262; width: 500px; height: auto; letter-spacing:3px; }
+.right em{position: absolute; bottom: -4px;_bottom:-5px; _font-size:0; left: 0; width:50px; height: 4px; background-color: #FFB717; }
+
+
+
+.body{ width: 60%; height: 450px; margin: 40px auto; /* float: right; */ /* padding: 40px 0 0 190px; */ }
+.txt,.inp{width: 100%; float: right;}
+.txt ul li{ color: #999; font-family: "微软雅黑"; font-size: 16px; line-height: 30px; }
+.txt h2{ color: #999; font-size:28px; font-family: "微软雅黑"; font-weight: normal; line-height: 36px; }
+.lovely{ padding-top: 20px !important; }
+.web-page,.web{color:#F7931E; }
+.inp{width: 100%; height:255px; z-index: 1;}
+
+
+.e-mail{margin-top: 35px;font-size: 14px; font-family: "微软雅黑";color: #ccc; width: 100%; _width: 948px;padding: 5px ;border:1px #B9B9B9 solid;
+ height: 30px;
+
+    box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-wbkit-box-sizing:border-box;
+	-ms-box-sizing:border-box; }
+.inp .opinion{
+	
+	font-size: 14px; font-family: "微软雅黑";color: #ccc; padding: 10px; 
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-wbkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	 width: 100%;_width: 938px;resize:none; margin-top: 15px;height: 187px; border:1px solid #b9b9b9;}
+
+.btn{ margin:45px 36% 0 ;_margin:15px  360px 132px ;font-family: "微软雅黑"; border:0; color:#fff;
+ width:220px; height: 40px; background-color: #FB9B23; cursor: pointer; }
+
+/* footer */
+
+.footer{
+	margin-top: 80px;
+	_margin-top: -50px;
+	padding-top: 20px;vertical-align: center; width: 100%; 
+ background-color: #F2F2F2; float: left; 
+	box-sizing:border-box;
+    -moz-box-sizing:border-box;
+	-wbkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+}
+.header{ width: 88%;/* width: 1150px; */height: 210px; margin: 20px auto;}
+.footer ul{ text-align: center; float: left;width: 18%; /* width: 220px; */ height: 210px; border-right: 1px solid #DBDBDB;}
+.footer li,.footer li a{ font-family: "微软雅黑"; line-height: 22px; font-size: 14px;   }
+.footer li{ margin: 10px; }
+.footer li a{ float: left; line-height: 22px; height: 22px; margin-top:5px; padding-left: 25px; color: #7B7B7B ; text-align: left; text-indent: 0.5em; white-space:nowrap; }
+.footer .title{ text-align: center; font-size: 18px; font-weight: 700; color: #7E7E7E; line-height: 26px;}
+.footer .about{ text-align: left; text-align: center;margin-left: -25px;}
+.end{box-sizing:border-box;
+    -moz-box-sizing:border-box;
+	-wbkit-box-sizing:border-box;
+	-ms-box-sizing:border-box; color: #7E7E7E; padding-top: 20px; text-align: center; width: 100%; height: 63px; border-top: 1px solid #DBDBDB; float: left; }
+	.end p{ width: 500px; margin:0 auto;}
+strong{ font-size: 16px; font-family:"微软雅黑"; font-weight: normal; }
+.footer .weibo,.footer .wechat,.footer .tel{ float: left; width: 45px; height: 45px; margin: 30px 0 0 30px;_margin:20px 0 0 0;}
+.footer .weibo a,.footer .wechat a{ width: 45px; height: 45px;  float: left;_padding:0;}
+.weibo img,.wechat img { width: 45px; height: 45px; float: left;}
+.footer .tel,.footer .tel a{ width:220px;line-height: 26px; font-size: 30px;_font-size:25px; font-weight: bold; _float:left;_padding:0;}
+.wechat{position: relative;} 
+.wechat span img{ position: absolute; top: -140px; left: -24px; width: 139px; height: 146px;s}
+
+.footer .tel a{padding: 0; float: left; margin-left: -30px;_margin-left: -45px;text-indent :0;color: #9E9E9E;}
+.no-r-last{ padding: 0; _width:200px; _overflow: hidden;_padding-left:15px; }

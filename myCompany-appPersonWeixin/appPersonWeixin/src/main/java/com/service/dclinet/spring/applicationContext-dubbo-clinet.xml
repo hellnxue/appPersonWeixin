@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans        
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+    <!-- JABAVA对外提供企业信息相关服务 -->
+	<dubbo:reference id="dubbo.jabavaCompanyProvider" interface="com.service.provider.IJabavaCompanyProvider"/>
+     <!--公司消息 -->
+    <dubbo:reference id="dubbo.announcementProvider" interface="com.service.provider.IAnnouncementProvider" />
+     <!-- 组织架构-->
+    <dubbo:reference id="dubbo.ehrZdyOrganizeService" interface="com.service.provider.IEhrZdyOrganizeService" />
+     
+    <dubbo:reference id="medicalServiceService" interface="com.service.provider.MedicalServiceService" />
+     <!--收货地址管理 -->
+    <dubbo:reference id="receivingAddrServiceInterface" interface="com.service.provider.ReceivingAddrServiceInterface" />
+    
+    <dubbo:reference id="dubbo.centerUserService" interface="com.service.provider.CenterUserService"
+		timeout="200000" />
+	<dubbo:reference id="dubbo.mobileService" interface="com.service.provider.MobileService" timeout="200000" />
+</beans>

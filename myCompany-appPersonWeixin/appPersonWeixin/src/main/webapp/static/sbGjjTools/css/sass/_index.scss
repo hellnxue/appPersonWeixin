@@ -1,0 +1,77 @@
+.index {
+    padding-bottom:px2rem(150);
+    dt {
+        @extend %title;
+    }
+    dd {
+        position:relative;
+        @extend %clearfix;
+        @extend %list;
+        span {
+            @extend %fr;
+            margin-right:px2rem(32);
+            color:#c9c9c9;
+            font-size:px2rem(48);
+        }
+        label,input,h2 {
+            @extend %fl;
+        }
+        label {
+            width:px2rem(240);
+            text-indent:px2rem(46);
+        }
+        input,h2,select {
+            width:px2rem(380);
+            height:100%;
+            border:0;
+            color:$colorText2;
+        }
+        select {
+            position:absolute;
+            z-index:1;
+            top:0;
+            left:px2rem(240);
+            width:px2rem(460);
+            @include opacity(0);
+        }
+    }
+    p {
+        margin:px2rem(100) 0;
+        padding:0 px2rem(60);
+        color:#7b7b7b;
+        font-size:px2rem(22);
+        line-height:px2rem(32);
+    }
+    input[type=submit] {
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        height:px2rem(100);
+        background-color:#ea5251;
+        border:none;
+        color:#fff;
+        font-size:px2rem(36);
+    }
+}
+.index .msg {
+    overflow:hidden;
+    width:px2rem(600);
+    padding:px2rem(50) 0;
+    background-color:#fff;
+    border-radius:px2rem(10);
+    font-size:px2rem($fontSize);
+    text-align:center;
+    .layermbtn {
+        height:px2rem(90);
+        margin-top:px2rem(40);
+    }
+    .layermbtn span {
+        width:px2rem(400);
+        height:100%;
+        background-color:#ea5251;
+        color:#fff;
+        font-size:px2rem(32);
+        line-height:px2rem(90);
+    }
+}

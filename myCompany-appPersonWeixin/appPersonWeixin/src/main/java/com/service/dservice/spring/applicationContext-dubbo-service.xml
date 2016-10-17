@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans        
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+ <!-- 微信模板消息服务端 -->
+ <dubbo:service interface="com.service.provider.TemplateMessage" ref="templateMessage" />
+    <bean id="templateMessage" class="com.service.provider.impl.TemplateMessageImpl" />    
+ <!-- 微信新闻推送服务端 -->
+ <dubbo:service interface="com.service.provider.WeiXinNewsService" ref="weiXinNewsService" />
+    <bean id="weiXinNewsService" class="com.service.provider.impl.WeiXinNewsServiceImpl" />
+    <!-- 积分模板消息服务端 -->
+ <dubbo:service interface="com.service.provider.WeiXinMessageService" ref="weiXinMessageService" />
+    <bean id="weiXinMessageService" class="com.service.provider.impl.WeiXinMessageServiceImpl" />    
+</beans>
+ 
